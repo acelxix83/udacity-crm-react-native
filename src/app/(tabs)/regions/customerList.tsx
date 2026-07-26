@@ -1,5 +1,5 @@
-import CustomerList from "@/src/features/components/Customer/list";
+import Region from "@/src/features/components/Region/view";
 
 export default function CustomerListScreen() {
-  return <CustomerList />;
+  return <Region />;
 }

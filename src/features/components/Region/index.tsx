@@ -1,21 +1,15 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  FlatList,
-} from "react-native";
+import { regions } from "@/src/constants/regions";
 import { useRouter } from "expo-router";
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 const RegionList = () => {
   const router = useRouter();
-  const regions = [
-    { id: 1, name: "South West" },
-    { id: 2, name: "North West" },
-    { id: 3, name: "South East" },
-    { id: 4, name: "North East" },
-    { id: 5, name: "Mid East" },
-  ];
 
   return (
     <View style={styles.container}>
@@ -34,7 +28,7 @@ const RegionList = () => {
               })
             }
           >
-            <Text style={styles.text}>{item.name}</Text>
+            <Text style={styles.text}>{item.label}</Text>
           </TouchableOpacity>
         )}
       />

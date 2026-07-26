@@ -1,8 +1,29 @@
+import { regions } from "@/src/constants/regions";
 import { Customer } from "@/src/types";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { useSelector } from "react-redux";
 
-const CustomerView = ({ customer }: { customer: Customer }) => {
-  //TODO: get customer from redux using id from route params
+const CustomerView = ({
+  customerId,
+  regionId,
+}: {
+  customerId: string;
+  regionId: string | null;
+}) => {
+  const customer: Customer = useSelector(
+    (state: any) => state.customer.list.customers[customerId],
+  );
+
+  if (!customer) {
+    return null;
+  }
+
+  const getRegionLabel = (regionId: string | null) => {
+    if (!regionId) return "N/A";
+    const region = regions.find((region) => region.value === regionId);
+    return region ? region.label : "N/A";
+  };
+
   return (
     <View style={styles.customerContainer}>
       <View style={styles.labelContainer}>
@@ -23,7 +44,7 @@ const CustomerView = ({ customer }: { customer: Customer }) => {
       </View>
       <View style={styles.labelContainer}>
         <Text style={styles.label}>Region:</Text>
-        <Text style={styles.text}>{customer.region}</Text>
+        <Text style={styles.text}>{getRegionLabel(regionId)}</Text>
       </View>
     </View>
   );

@@ -1,48 +1,24 @@
-import CustomerView from "./view";
-import type { Customer } from "@/src/types";
+import type { Customer, Region } from "@/src/types";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router";
+import { useSelector } from "react-redux";
+import CustomerView from "./view";
 
 const CustomerList = () => {
+  const { regionId } = useLocalSearchParams();
+  const region = useSelector((state: any) =>
+    state.region.list.regions.find((region: Region) => region.id === regionId),
+  );
+  const allCustomers = useSelector(
+    (state: any) => state.customer.list.customers,
+  );
+
+  const customers: Customer[] = region
+    ? region.customerIds.map((customerId: string) =>
+        allCustomers.find((customer: Customer) => customer.id === customerId),
+      )
+    : [];
   const router = useRouter();
-  //TODO: get customers from redux
-  const customers: Customer[] = [
-    {
-      id: 1,
-      firstName: "John",
-      lastName: "Doe",
-      isActive: true,
-      region: 1,
-    },
-    {
-      id: 2,
-      firstName: "Jane",
-      lastName: "Smith",
-      isActive: false,
-      region: 2,
-    },
-    {
-      id: 3,
-      firstName: "Alice",
-      lastName: "Johnson",
-      isActive: true,
-      region: 1,
-    },
-    {
-      id: 4,
-      firstName: "Bob",
-      lastName: "Brown",
-      isActive: false,
-      region: 2,
-    },
-    {
-      id: 5,
-      firstName: "Charlie",
-      lastName: "Davis",
-      isActive: true,
-      region: 3,
-    },
-  ];
 
   return (
     <ScrollView style={styles.customerContainer}>
@@ -52,11 +28,15 @@ const CustomerList = () => {
           onPress={() => {
             router.push({
               pathname: `/regions/editCustomer`,
-              params: { id: customer.id?.toString() },
+              params: { id: customer.id },
             });
           }}
         >
-          <CustomerView key={customer.id} customer={customer} />
+          <CustomerView
+            key={customer.id}
+            customerId={customer.id as string}
+            regionId={regionId as string}
+          />
         </TouchableOpacity>
       ))}
     </ScrollView>

@@ -1,61 +1,50 @@
+import { useLocalSearchParams, useRouter } from "expo-router";
 import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
   FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { useRouter, useLocalSearchParams } from "expo-router";
-import CustomerView from "../Customer/new";
+import { useSelector } from "react-redux";
+import CustomerView from "../Customer/view";
 
 const Region = () => {
   const { regionId } = useLocalSearchParams();
-  console.log("regionId", regionId);
-  //TODO: get customers for the region from redux using regionId
+  const regionCustomerIds: string[] =
+    useSelector(
+      (state: any) =>
+        state.region.list.regions[regionId as string]?.customerIds,
+    ) ?? [];
+
   const router = useRouter();
-  const customersForRegion = [
-    {
-      id: 1,
-      firstName: "John",
-      lastName: "Doe",
-      isActive: true,
-      region: "South West",
-    },
-    {
-      id: 2,
-      firstName: "Jane",
-      lastName: "Smith",
-      isActive: false,
-      region: "North West",
-    },
-    {
-      id: 3,
-      firstName: "Alice",
-      lastName: "Johnson",
-      isActive: true,
-      region: "South West",
-    },
-    {
-      id: 4,
-      firstName: "Bob",
-      lastName: "Brown",
-      isActive: true,
-      region: "North West",
-    },
-  ];
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Regions</Text>
-      <Text style={styles.instructions}>Select a region:</Text>
       <FlatList
-        data={customersForRegion}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => <CustomerView></CustomerView>}
+        data={regionCustomerIds}
+        keyExtractor={(customerId) => customerId}
+        renderItem={({ item: customerId }) => (
+          <TouchableOpacity
+            onPress={() =>
+              router.push({
+                pathname: `/regions/editCustomer`,
+                params: { customerId },
+              })
+            }
+          >
+            <CustomerView
+              customerId={customerId}
+              regionId={regionId as string}
+            />
+          </TouchableOpacity>
+        )}
       />
       <TouchableOpacity
         style={styles.button}
-        onPress={() => router.push(`/regions/newCustomer`)}
+        onPress={() =>
+          router.push(`/regions/newCustomer?regionId=${regionId as string}`)
+        }
       >
         <Text style={styles.text}>Create Customer</Text>
       </TouchableOpacity>

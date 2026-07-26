@@ -6,8 +6,13 @@ import { IconSymbol } from "@/src/components/ui/icon-symbol";
 import { Colors } from "@/src/constants/theme";
 import { useColorScheme } from "@/src/hooks/use-color-scheme";
 
+import { useLoadCustomers } from "@/src/features/components/Customer/hooks";
+import { useLoadRegions } from "@/src/features/components/Region/hooks";
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  useLoadCustomers();
+  useLoadRegions();
 
   return (
     <Tabs
