@@ -1,5 +1,6 @@
 import { Tabs } from "expo-router";
 import React from "react";
+import { ActivityIndicator, Text, View } from "react-native";
 
 import { HapticTab } from "@/src/components/haptic-tab";
 import { IconSymbol } from "@/src/components/ui/icon-symbol";
@@ -10,7 +11,23 @@ import { useLoadState } from "@/src/features/hooks";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  useLoadState();
+  const { isLoading } = useLoadState();
+
+  if (isLoading) {
+    return (
+      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+        <ActivityIndicator
+          size="large"
+          color={Colors[colorScheme ?? "light"].tint}
+        />
+        <Text
+          style={{ marginTop: 10, color: Colors[colorScheme ?? "light"].tint }}
+        >
+          Loading...
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <Tabs

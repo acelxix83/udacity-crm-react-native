@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import DropdownComponent from "@/src/components/dropdown";
 import { boolOptions } from "@/src/constants/boolOptions";
 import { regions } from "@/src/constants/regions";
+import { LOADING } from "@/src/constants/status";
 import { Customer, CustomerRequest } from "@/src/types";
 
 const CustomerForm = ({
@@ -74,6 +75,25 @@ const CustomerForm = ({
 
   return (
     <View style={{ flex: 1, justifyContent: "space-between" }}>
+      {status === LOADING && (
+        <View
+          style={{
+            // flex: 1,
+            padding: 20,
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            height: "100%",
+            backgroundColor: "#2a7ad680",
+            zIndex: 1,
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={{ color: "#fff" }}>Saving customer...</Text>
+        </View>
+      )}
       <View style={styles.customerContainer}>
         {isEditMode && (
           <View
