@@ -1,5 +1,5 @@
 import { ERROR, IDLE, LOADING } from "@/src/constants/status";
-import { Customer } from "@/src/types";
+import { Customer, CustomerRequest, CustomerResult } from "@/src/types";
 import { createSlice } from "@reduxjs/toolkit";
 
 const name = "customer";
@@ -21,17 +21,16 @@ const initialState = {
 const reducers = {
   createCustomer(
     state: typeof initialState,
-    { payload }: { payload: Customer },
+    { payload }: { payload: CustomerRequest },
   ) {
     state.create.status = LOADING;
-    console.log("Editing region:", payload);
   },
   createCustomerSuccess(
     state: typeof initialState,
-    { payload }: { payload: Record<string, Customer> },
+    { payload }: { payload: CustomerResult },
   ) {
     state.create.status = IDLE;
-    state.list.customers = payload;
+    state.list.customers = payload.customers;
   },
   createCustomerError(
     state: typeof initialState,
@@ -40,15 +39,18 @@ const reducers = {
     state.create.status = ERROR;
     state.error = payload;
   },
-  editCustomer(state: typeof initialState, { payload }: { payload: Customer }) {
+  editCustomer(
+    state: typeof initialState,
+    { payload }: { payload: CustomerRequest },
+  ) {
     state.edit.status = LOADING;
   },
   editCustomerSuccess(
     state: typeof initialState,
-    { payload }: { payload: Record<string, Customer> },
+    { payload }: { payload: CustomerResult },
   ) {
     state.edit.status = IDLE;
-    state.list.customers = payload;
+    state.list.customers = payload.customers;
   },
   editCustomerError(
     state: typeof initialState,

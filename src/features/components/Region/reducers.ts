@@ -1,6 +1,10 @@
 import { ERROR, IDLE, LOADING } from "@/src/constants/status";
-import { Region } from "@/src/types";
+import { CustomerResult, Region } from "@/src/types";
 import { createSlice } from "@reduxjs/toolkit";
+import {
+  createCustomerSuccess,
+  editCustomerSuccess,
+} from "../Customer/reducers";
 
 const name = "region";
 
@@ -54,10 +58,50 @@ const reducers = {
   },
 };
 
+const extraReducers = (builder: any) => {
+  builder
+    .addCase(
+      editCustomerSuccess,
+      (state: typeof initialState, action: { payload: CustomerResult }) => {
+        const customerId = action.payload.customerId as string;
+        const regionId = action.payload.customers[customerId]
+          .regionId as string;
+        const originalRegionId = action.payload.originalRegion as string;
+
+        if (regionId === originalRegionId) {
+          // If the region hasn't changed, no need to update the regions
+          return;
+        }
+
+        //add customer to new region
+        state.list.regions[regionId].customerIds.push(customerId);
+
+        //remove customer from old region
+        const index =
+          state.list.regions[originalRegionId].customerIds.indexOf(customerId);
+        if (index > -1) {
+          state.list.regions[originalRegionId].customerIds.splice(index, 1);
+        }
+      },
+    )
+    .addCase(
+      createCustomerSuccess,
+      (state: typeof initialState, action: { payload: CustomerResult }) => {
+        const customerId = action.payload.customerId as string;
+        const regionId = action.payload.customers[customerId]
+          .regionId as string;
+
+        //add customer to new region
+        state.list.regions[regionId].customerIds.push(customerId);
+      },
+    );
+};
+
 const regionSlice = createSlice({
   name,
   initialState,
   reducers,
+  extraReducers,
 });
 
 export const {

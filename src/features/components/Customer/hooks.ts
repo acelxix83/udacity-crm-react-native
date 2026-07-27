@@ -1,4 +1,5 @@
 import * as actions from "@/src/features/components/Customer/reducers";
+import { CustomerRequest } from "@/src/types";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -16,8 +17,8 @@ export const useCreateCustomer = () => {
   const dispatch = useDispatch();
 
   const createCustomer = {
-    handleSubmit: () => {
-      dispatch(actions.createCustomer());
+    handleSubmit: (customerRequest: CustomerRequest) => {
+      dispatch(actions.createCustomer(customerRequest));
     },
   };
 
@@ -28,8 +29,8 @@ export const useEditCustomer = () => {
   const dispatch = useDispatch();
 
   const editCustomer = {
-    handleSubmit: () => {
-      dispatch(actions.editCustomer());
+    handleSubmit: (customerRequest: CustomerRequest) => {
+      dispatch(actions.editCustomer(customerRequest));
     },
   };
 

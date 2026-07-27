@@ -28,7 +28,15 @@ function* loadRegionsSaga() {
                 },
                 "3": {
                   id: "3",
-                  customerIds: ["4", "5"],
+                  customerIds: [],
+                },
+                "4": {
+                  id: "4",
+                  customerIds: [],
+                },
+                "5": {
+                  id: "5",
+                  customerIds: [],
                 },
               }),
             1000,

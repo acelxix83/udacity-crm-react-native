@@ -11,18 +11,19 @@ import { useSelector } from "react-redux";
 import DropdownComponent from "@/src/components/dropdown";
 import { boolOptions } from "@/src/constants/boolOptions";
 import { regions } from "@/src/constants/regions";
+import { Customer, CustomerRequest } from "@/src/types";
 
 const CustomerForm = ({
   handleSubmit,
   status,
   customerId,
 }: {
-  handleSubmit: () => void;
+  handleSubmit: (customerRequest: CustomerRequest) => void;
   status: string;
   customerId: string | null;
 }) => {
   const isEditMode = customerId !== null;
-  console.log("CustomerForm: ", customerId as string, status);
+  //TODO: memoize this form
   const customer = useSelector(
     (state: any) => state.customer.list.customers[customerId as string],
   ) ?? {
@@ -33,7 +34,6 @@ const CustomerForm = ({
     regionId: null,
   };
 
-  console.log("CustomerForm: ", customer);
   const [firstName, setFirstName] = useState(customer.firstName);
   const [lastName, setLastName] = useState(customer.lastName);
   const [isActive, setIsActive] = useState(
@@ -55,6 +55,21 @@ const CustomerForm = ({
 
   const handleRegionChange = (text: string) => {
     setRegionId(text !== "" ? text : null);
+  };
+
+  const handleSubmitForm = () => {
+    //TODO: add validation
+    const customerData: Customer = {
+      id: customerId,
+      firstName,
+      lastName,
+      isActive: isActive === "true",
+      regionId: regionId !== null ? regionId : null,
+    };
+
+    const originalRegion = customer.regionId;
+    const customerRequest = { originalRegion, customer: customerData };
+    handleSubmit(customerRequest);
   };
 
   return (
@@ -111,7 +126,7 @@ const CustomerForm = ({
         </View>
       </View>
       <View style={{ padding: 20 }}>
-        <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+        <TouchableOpacity style={styles.button} onPress={handleSubmitForm}>
           <Text style={styles.text}>Save Customer</Text>
         </TouchableOpacity>
       </View>

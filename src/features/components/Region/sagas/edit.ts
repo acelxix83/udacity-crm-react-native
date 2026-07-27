@@ -23,7 +23,7 @@ function* editRegionSaga(action: { type: string; payload: Region }) {
     };
     yield put(actions.editRegionSuccess(updatedRegions));
   } catch (error) {
-    console.log("Error editing region:", error);
+    console.error("Error editing region:", error);
     yield put(actions.editRegionError("Failed to edit region"));
   }
 }

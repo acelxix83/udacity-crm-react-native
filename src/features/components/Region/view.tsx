@@ -10,17 +10,20 @@ import { useSelector } from "react-redux";
 import CustomerView from "../Customer/view";
 
 const Region = () => {
+  const router = useRouter();
   const { regionId } = useLocalSearchParams();
   const regionCustomerIds: string[] =
     useSelector(
       (state: any) =>
         state.region.list.regions[regionId as string]?.customerIds,
     ) ?? [];
-
-  const router = useRouter();
+  const hasCustomers = regionCustomerIds.length > 0;
 
   return (
     <View style={styles.container}>
+      {!hasCustomers && (
+        <Text style={styles.instructions}>No customers yet.</Text>
+      )}
       <FlatList
         data={regionCustomerIds}
         keyExtractor={(customerId) => customerId}

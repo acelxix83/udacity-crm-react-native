@@ -8,7 +8,6 @@ const EditCustomer = () => {
 
   const { handleSubmit } = useEditCustomer();
 
-  console.log("EditCustomer: ", customerId, status);
   return (
     <CustomerForm
       status={status}
