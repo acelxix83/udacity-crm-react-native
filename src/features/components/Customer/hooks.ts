@@ -1,17 +1,6 @@
 import * as actions from "@/src/features/components/Customer/reducers";
 import { CustomerRequest } from "@/src/types";
-import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-export const useLoadCustomers = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(actions.loadCustomers());
-  }, [dispatch]);
-
-  return useSelector((state: any) => state.customer.list.customers);
-};
 
 export const useCreateCustomer = () => {
   const dispatch = useDispatch();

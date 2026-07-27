@@ -1,4 +1,5 @@
 import { ERROR, IDLE, LOADING } from "@/src/constants/status";
+import { loadState } from "@/src/features/sharedActions";
 import { CustomerResult, Region } from "@/src/types";
 import { createSlice } from "@reduxjs/toolkit";
 import {
@@ -37,9 +38,6 @@ const reducers = {
     state.edit.status = ERROR;
     state.error = payload;
   },
-  loadRegions(state: typeof initialState) {
-    state.list.status = LOADING;
-  },
   loadRegionsSuccess(
     state: typeof initialState,
     { payload }: { payload: Record<string, Region> },
@@ -60,6 +58,16 @@ const reducers = {
 
 const extraReducers = (builder: any) => {
   builder
+    .addCase(
+      loadState,
+      (state: typeof initialState, action: { payload: any }) => {
+        state.list.status = LOADING;
+        const regions = action.payload?.regions;
+        if (regions) {
+          state.list.regions = regions;
+        }
+      },
+    )
     .addCase(
       editCustomerSuccess,
       (state: typeof initialState, action: { payload: CustomerResult }) => {
@@ -108,7 +116,6 @@ export const {
   editRegion,
   editRegionSuccess,
   editRegionError,
-  loadRegions,
   loadRegionsSuccess,
   loadRegionsError,
 } = regionSlice.actions;

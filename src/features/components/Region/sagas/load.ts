@@ -1,9 +1,10 @@
+import { loadState } from "@/src/features/sharedActions";
 import { Region } from "@/src/types";
 import { call, put, takeLatest } from "redux-saga/effects";
 import * as actions from "../reducers";
 
 export function* watchLoadRegions() {
-  yield takeLatest(actions.loadRegions.type, loadRegionsSaga);
+  yield takeLatest(loadState.type, loadRegionsSaga);
 }
 
 function* loadRegionsSaga() {

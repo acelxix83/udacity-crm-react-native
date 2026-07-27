@@ -1,9 +1,11 @@
+import { loadState } from "@/src/features/sharedActions";
 import { Customer } from "@/src/types";
 import { call, put, takeLatest } from "redux-saga/effects";
 import * as actions from "../reducers";
 
 export function* watchLoadCustomers() {
-  yield takeLatest(actions.loadCustomers.type, loadCustomersSaga);
+  console.log("watchLoadCustomers called", loadState.type);
+  yield takeLatest(loadState.type, loadCustomersSaga);
 }
 
 function* loadCustomersSaga() {
@@ -19,21 +21,21 @@ function* loadCustomersSaga() {
             () =>
               resolve({
                 "1": {
-                  id: "1",
+                  id: "cda35231",
                   firstName: "John",
                   lastName: "Doe",
                   isActive: true,
                   regionId: "1",
                 },
                 "2": {
-                  id: "2",
+                  id: "edad789d",
                   firstName: "Jane",
                   lastName: "Doe",
                   isActive: true,
                   regionId: "2",
                 },
                 "3": {
-                  id: "3",
+                  id: "a2bfdad4",
                   firstName: "Sam",
                   lastName: "Smith",
                   isActive: false,
