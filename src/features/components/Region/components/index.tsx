@@ -52,11 +52,11 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     textAlign: "center",
-    color: "#eee",
+    color: "#000",
   },
   instructions: {
     fontSize: 18,
-    color: "#eee",
+    color: "#000",
     marginTop: 20,
   },
   button: {

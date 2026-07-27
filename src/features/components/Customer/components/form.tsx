@@ -177,13 +177,13 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 14,
-    color: "#eee",
+    color: "#000",
     fontWeight: "bold",
     width: "30%",
   },
   text: {
     fontSize: 14,
-    color: "#eee",
+    color: "#000",
   },
   labelContainer: {
     justifyContent: "space-between",

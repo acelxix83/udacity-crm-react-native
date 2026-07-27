@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 24,
     textAlign: "center",
-    color: "#eee",
+    color: "#000",
   },
   button: {
     backgroundColor: "#007AFF",

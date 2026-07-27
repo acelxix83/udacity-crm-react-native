@@ -9,6 +9,7 @@ import {
 const EditCustomer = () => {
   const route = useRoute<any>();
   const customerId = route.params?.customerId as string;
+
   const status = useEditCustomerStatus();
 
   const { handleSubmit } = useEditCustomer();
