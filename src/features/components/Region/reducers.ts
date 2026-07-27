@@ -1,6 +1,8 @@
 import { ERROR, IDLE, LOADING } from "@/src/constants/status";
-import { loadState } from "@/src/features/sharedActions";
+import { REGIONS_KEY } from "@/src/constants/storageKeys";
+import { clearState, loadState } from "@/src/features/sharedActions";
 import { CustomerResult, Region } from "@/src/types";
+import { set } from "@/src/utilities/asyncStorage";
 import { createSlice } from "@reduxjs/toolkit";
 import {
   createCustomerSuccess,
@@ -9,9 +11,15 @@ import {
 
 const name = "region";
 
-const initialState = {
+export const initialState = {
   list: {
-    regions: {} as Record<string, Region>,
+    regions: {
+      "1": { id: "1", customerIds: [] },
+      "2": { id: "2", customerIds: [] },
+      "3": { id: "3", customerIds: [] },
+      "4": { id: "4", customerIds: [] },
+      "5": { id: "5", customerIds: [] },
+    } as Record<string, Region>,
     status: IDLE,
   },
   edit: {
@@ -21,23 +29,6 @@ const initialState = {
 };
 
 const reducers = {
-  editRegion(state: typeof initialState, { payload }: { payload: Region }) {
-    state.edit.status = LOADING;
-  },
-  editRegionSuccess(
-    state: typeof initialState,
-    { payload }: { payload: Record<string, Region> },
-  ) {
-    state.edit.status = IDLE;
-    state.list.regions = payload;
-  },
-  editRegionError(
-    state: typeof initialState,
-    { payload }: { payload: string },
-  ) {
-    state.edit.status = ERROR;
-    state.error = payload;
-  },
   loadRegionsSuccess(
     state: typeof initialState,
     { payload }: { payload: Record<string, Region> },
@@ -52,7 +43,7 @@ const reducers = {
     state.list.status = ERROR;
     console.error("Error loading regions:", payload);
     state.error = payload;
-    state.list.regions = {};
+    state.list.regions = initialState.list.regions; // Reset to initial regions on error
   },
 };
 
@@ -65,9 +56,15 @@ const extraReducers = (builder: any) => {
         const regions = action.payload?.regions;
         if (regions) {
           state.list.regions = regions;
+        } else {
+          state.list.regions = initialState.list.regions; // Reset to initial regions if no regions in payload
         }
       },
     )
+    .addCase(clearState, (state: typeof initialState) => {
+      state.list.status = IDLE;
+      state.list.regions = initialState.list.regions; // Reset to initial regions on clear
+    })
     .addCase(
       editCustomerSuccess,
       (state: typeof initialState, action: { payload: CustomerResult }) => {
@@ -90,6 +87,8 @@ const extraReducers = (builder: any) => {
         if (index > -1) {
           state.list.regions[originalRegionId].customerIds.splice(index, 1);
         }
+
+        set(REGIONS_KEY, state.list.regions);
       },
     )
     .addCase(
@@ -101,6 +100,7 @@ const extraReducers = (builder: any) => {
 
         //add customer to new region
         state.list.regions[regionId].customerIds.push(customerId);
+        set(REGIONS_KEY, state.list.regions);
       },
     );
 };
@@ -112,12 +112,6 @@ const regionSlice = createSlice({
   extraReducers,
 });
 
-export const {
-  editRegion,
-  editRegionSuccess,
-  editRegionError,
-  loadRegionsSuccess,
-  loadRegionsError,
-} = regionSlice.actions;
+export const { loadRegionsSuccess, loadRegionsError } = regionSlice.actions;
 
 export default regionSlice.reducer;

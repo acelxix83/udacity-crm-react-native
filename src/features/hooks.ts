@@ -18,3 +18,11 @@ export const useLoadState = () => {
   const isLoading = customerStatus === LOADING || regionStatus === LOADING;
   return { isLoading };
 };
+
+export const useClearState = () => {
+  const dispatch = useDispatch();
+  const clearState = () => {
+    dispatch(actions.clearState());
+  };
+  return { clearState };
+};

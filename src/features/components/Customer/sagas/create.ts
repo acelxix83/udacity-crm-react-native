@@ -1,5 +1,7 @@
+import { CUSTOMERS_KEY } from "@/src/constants/storageKeys";
 import * as actions from "@/src/features/components/Customer/reducers";
 import { Customer, CustomerRequest, CustomerResult } from "@/src/types";
+import { set } from "@/src/utilities/asyncStorage";
 import { call, put, select, takeLatest } from "redux-saga/effects";
 
 export function* watchCreateCustomer() {
@@ -32,6 +34,7 @@ function* createCustomerSaga(action: {
       originalRegion: null,
       customers: updatedCustomers,
     };
+    yield set(CUSTOMERS_KEY, updatedCustomers);
     yield put(actions.createCustomerSuccess(result));
   } catch (error) {
     console.error("Error creating customer:", error);

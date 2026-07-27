@@ -1,5 +1,5 @@
 import { ERROR, IDLE, LOADING } from "@/src/constants/status";
-import { loadState } from "@/src/features/sharedActions";
+import { clearState, loadState } from "@/src/features/sharedActions";
 import { Customer, CustomerRequest, CustomerResult } from "@/src/types";
 import { createSlice } from "@reduxjs/toolkit";
 
@@ -78,15 +78,20 @@ const reducers = {
 };
 
 const extraReducers = (builder: any) => {
-  builder.addCase(
-    loadState,
-    (state: typeof initialState, action: { payload: any }) => {
-      state.list.status = LOADING;
-      if (action.payload?.customers) {
-        state.list.customers = action.payload?.customers;
-      }
-    },
-  );
+  builder
+    .addCase(
+      loadState,
+      (state: typeof initialState, action: { payload: any }) => {
+        state.list.status = LOADING;
+        if (action.payload?.customers) {
+          state.list.customers = action.payload?.customers;
+        }
+      },
+    )
+    .addCase(clearState, (state: typeof initialState) => {
+      state.list.status = IDLE;
+      state.list.customers = {};
+    });
 };
 
 const customerSlice = createSlice({

@@ -1,7 +1,10 @@
+import { REGIONS_KEY } from "@/src/constants/storageKeys";
+import * as actions from "@/src/features/components/Region/reducers";
+import { initialState } from "@/src/features/components/Region/reducers";
 import { loadState } from "@/src/features/sharedActions";
 import { Region } from "@/src/types";
-import { call, put, takeLatest } from "redux-saga/effects";
-import * as actions from "../reducers";
+import { get } from "@/src/utilities/asyncStorage";
+import { put, takeLatest } from "redux-saga/effects";
 
 export function* watchLoadRegions() {
   yield takeLatest(loadState.type, loadRegionsSaga);
@@ -9,42 +12,13 @@ export function* watchLoadRegions() {
 
 function* loadRegionsSaga() {
   try {
-    //TODO: implement async storage
+    let regionsData: Record<string, Region> = yield get(REGIONS_KEY);
 
-    // Simulate an API call to fetch customers
-    const regions: Record<string, Region> = yield call(
-      () =>
-        // Simulate API call delay
-        new Promise((resolve: (value: Record<string, Region>) => void) =>
-          setTimeout(
-            () =>
-              resolve({
-                "1": {
-                  id: "1",
-                  customerIds: ["1"],
-                },
-                "2": {
-                  id: "2",
-                  customerIds: ["2", "3"],
-                },
-                "3": {
-                  id: "3",
-                  customerIds: [],
-                },
-                "4": {
-                  id: "4",
-                  customerIds: [],
-                },
-                "5": {
-                  id: "5",
-                  customerIds: [],
-                },
-              }),
-            1000,
-          ),
-        ),
-    );
-    yield put(actions.loadRegionsSuccess(regions));
+    if (!regionsData) {
+      regionsData = initialState.list.regions;
+    }
+
+    yield put(actions.loadRegionsSuccess(regionsData));
   } catch (error: any) {
     yield put(actions.loadRegionsError(error.message));
   }
