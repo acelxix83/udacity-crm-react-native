@@ -1,10 +1,10 @@
+import { useClearState } from "@/src/features/shared/hooks";
 import { clearStorage } from "@/src/utilities/asyncStorage";
-import { useRouter } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useClearState } from "../../hooks";
 
 const Welcome = () => {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
   const { clearState } = useClearState();
 
   const handleClearStorage = async () => {
@@ -18,7 +18,7 @@ const Welcome = () => {
       <Text style={styles.text}>Welcome</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => router.push("/regions")}
+        onPress={() => navigation.navigate("Regions")}
       >
         <Text style={styles.text}>Click to continue...</Text>
       </TouchableOpacity>

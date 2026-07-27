@@ -1,7 +1,8 @@
-import * as actions from "@/src/features/sharedActions";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { LOADING } from "../constants/status";
+
+import { LOADING } from "@/src/constants/status";
+import * as actions from "@/src/features/shared/actions";
 
 export const useLoadState = () => {
   const dispatch = useDispatch();

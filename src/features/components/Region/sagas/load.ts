@@ -1,7 +1,7 @@
 import { REGIONS_KEY } from "@/src/constants/storageKeys";
 import * as actions from "@/src/features/components/Region/reducers";
 import { initialState } from "@/src/features/components/Region/reducers";
-import { loadState } from "@/src/features/sharedActions";
+import { loadState } from "@/src/features/shared/actions";
 import { Region } from "@/src/types";
 import { get } from "@/src/utilities/asyncStorage";
 import { put, takeLatest } from "redux-saga/effects";

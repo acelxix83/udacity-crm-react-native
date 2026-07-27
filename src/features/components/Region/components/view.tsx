@@ -1,4 +1,4 @@
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import {
   FlatList,
   StyleSheet,
@@ -7,11 +7,12 @@ import {
   View,
 } from "react-native";
 import { useSelector } from "react-redux";
-import CustomerView from "../Customer/view";
+import CustomerView from "../../Customer/components/view";
 
 const Region = () => {
-  const router = useRouter();
-  const { regionId } = useLocalSearchParams();
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
+  const regionId = route.params?.regionId as string;
   const regionCustomerIds: string[] =
     useSelector(
       (state: any) =>
@@ -29,12 +30,7 @@ const Region = () => {
         keyExtractor={(customerId) => customerId}
         renderItem={({ item: customerId }) => (
           <TouchableOpacity
-            onPress={() =>
-              router.push({
-                pathname: `/regions/editCustomer`,
-                params: { customerId },
-              })
-            }
+            onPress={() => navigation.navigate("EditCustomer", { customerId })}
           >
             <CustomerView
               customerId={customerId}
@@ -45,9 +41,7 @@ const Region = () => {
       />
       <TouchableOpacity
         style={styles.button}
-        onPress={() =>
-          router.push(`/regions/newCustomer?regionId=${regionId as string}`)
-        }
+        onPress={() => navigation.navigate("NewCustomer", { regionId })}
       >
         <Text style={styles.text}>Create Customer</Text>
       </TouchableOpacity>

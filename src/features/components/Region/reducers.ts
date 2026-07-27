@@ -1,6 +1,6 @@
 import { ERROR, IDLE, LOADING } from "@/src/constants/status";
 import { REGIONS_KEY } from "@/src/constants/storageKeys";
-import { clearState, loadState } from "@/src/features/sharedActions";
+import { clearState, loadState } from "@/src/features/shared/actions";
 import { CustomerResult, Region } from "@/src/types";
 import { set } from "@/src/utilities/asyncStorage";
 import { createSlice } from "@reduxjs/toolkit";

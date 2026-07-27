@@ -1,5 +1,5 @@
 import { regions } from "@/src/constants/regions";
-import { useRouter } from "expo-router";
+import { useNavigation } from "@react-navigation/native";
 import {
   FlatList,
   StyleSheet,
@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 const RegionList = () => {
-  const router = useRouter();
+  const navigation = useNavigation<any>();
 
   return (
     <View style={styles.container}>
@@ -22,9 +22,8 @@ const RegionList = () => {
           <TouchableOpacity
             style={styles.button}
             onPress={() =>
-              router.push({
-                pathname: `/regions/customerList`,
-                params: { regionId: item.id.toString() },
+              navigation.navigate("RegionCustomers", {
+                regionId: item.id.toString(),
               })
             }
           >
@@ -34,7 +33,7 @@ const RegionList = () => {
       />
       <TouchableOpacity
         style={styles.button}
-        onPress={() => router.push(`/regions/newCustomer`)}
+        onPress={() => navigation.navigate("NewCustomer")}
       >
         <Text style={styles.text}>Create Customer</Text>
       </TouchableOpacity>

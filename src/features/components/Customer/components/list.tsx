@@ -1,11 +1,14 @@
-import type { Customer, Region } from "@/src/types";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { ScrollView, StyleSheet, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
-import CustomerView from "./view";
+
+import CustomerView from "@/src/features/components/Customer/components/view";
+import type { Customer, Region } from "@/src/types";
 
 const CustomerList = () => {
-  const { regionId } = useLocalSearchParams();
+  const navigation = useNavigation<any>();
+  const route = useRoute<any>();
+  const regionId = route.params?.regionId as string;
   const region = useSelector((state: any) =>
     state.region.list.regions.find((region: Region) => region.id === regionId),
   );
@@ -18,7 +21,6 @@ const CustomerList = () => {
         allCustomers.find((customer: Customer) => customer.id === customerId),
       )
     : [];
-  const router = useRouter();
 
   return (
     <ScrollView style={styles.customerContainer}>
@@ -26,9 +28,8 @@ const CustomerList = () => {
         <TouchableOpacity
           key={customer.id}
           onPress={() => {
-            router.push({
-              pathname: `/regions/editCustomer`,
-              params: { id: customer.id },
+            navigation.navigate("EditCustomer", {
+              customerId: customer.id,
             });
           }}
         >

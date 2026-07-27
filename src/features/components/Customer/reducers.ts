@@ -1,5 +1,5 @@
 import { ERROR, IDLE, LOADING } from "@/src/constants/status";
-import { clearState, loadState } from "@/src/features/sharedActions";
+import { clearState, loadState } from "@/src/features/shared/actions";
 import { Customer, CustomerRequest, CustomerResult } from "@/src/types";
 import { createSlice } from "@reduxjs/toolkit";
 

@@ -1,5 +1,5 @@
 import { CUSTOMERS_KEY } from "@/src/constants/storageKeys";
-import { loadState } from "@/src/features/sharedActions";
+import { loadState } from "@/src/features/shared/actions";
 import { Customer } from "@/src/types";
 import { get } from "@/src/utilities/asyncStorage";
 import { put, takeLatest } from "redux-saga/effects";

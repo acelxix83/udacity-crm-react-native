@@ -1,5 +1,5 @@
+import { useCreateCustomer, useCreateCustomerStatus } from "../hooks";
 import CustomerForm from "./form";
-import { useCreateCustomer, useCreateCustomerStatus } from "./hooks";
 
 const NewCustomer = () => {
   const status = useCreateCustomerStatus();
