@@ -54,13 +54,6 @@ const stylesFn = () => {
     textArea: {
       height: 120,
     },
-    customerContainer: {
-      padding: 20,
-      borderWidth: 2,
-      borderColor: "#ccc",
-      borderRadius: 20,
-      backgroundColor: "#2a7ad6",
-    },
     label: {
       fontSize: 14,
       fontWeight: "bold",
@@ -82,13 +75,6 @@ const stylesFn = () => {
       marginBottom: 10,
       justifyContent: "space-between",
       flexDirection: "row",
-    },
-    sectionHeader: {
-      fontSize: 18,
-      fontWeight: "bold",
-      marginTop: 20,
-      marginBottom: 5,
-      paddingLeft: 10,
     },
     toUpper: {
       textTransform: "uppercase",

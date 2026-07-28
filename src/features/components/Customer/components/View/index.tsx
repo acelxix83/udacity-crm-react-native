@@ -1,15 +1,19 @@
-import { regions } from "@/src/constants/regions";
-import { Customer } from "@/src/types";
 import { Text, View } from "react-native";
 import { useSelector } from "react-redux";
+
+import SectionContainer from "@/src/components/SectionContainer";
+import { regions } from "@/src/constants/regions";
+import { Customer } from "@/src/types";
 import stylesFn from "./styles";
 
 const CustomerView = ({
   customerId,
   regionId,
+  title,
 }: {
   customerId: string;
   regionId: string | null;
+  title?: string;
 }) => {
   const styles = stylesFn();
   const customer: Customer = useSelector(
@@ -27,7 +31,7 @@ const CustomerView = ({
   };
 
   return (
-    <View style={styles.customerContainer}>
+    <SectionContainer title={title}>
       <View style={styles.labelContainer}>
         <Text style={styles.label}>ID:</Text>
         <Text style={[styles.text, styles.toUpper]}>{customer.id}</Text>
@@ -52,7 +56,7 @@ const CustomerView = ({
           {getRegionLabel(regionId)}
         </Text>
       </View>
-    </View>
+    </SectionContainer>
   );
 };
 

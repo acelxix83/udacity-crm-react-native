@@ -7,14 +7,6 @@ const stylesFn = () => {
       justifyContent: "space-between",
       height: "100%",
     },
-    customerContainer: {
-      padding: 20,
-      borderWidth: 2,
-      borderColor: "#ccc",
-      borderRadius: 20,
-      marginBottom: 20,
-      backgroundColor: "#2a7ad6",
-    },
     label: {
       fontSize: 14,
       fontWeight: "bold",
@@ -32,11 +24,6 @@ const stylesFn = () => {
       flexDirection: "row",
       gap: 8,
       justifyContent: "space-between",
-    },
-    sectionHeader: {
-      fontSize: 18,
-      fontWeight: "bold",
-      marginBottom: 10,
     },
   });
 };

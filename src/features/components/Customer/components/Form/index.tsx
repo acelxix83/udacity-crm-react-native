@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 
 import Button from "@/src/components/Button";
 import DropdownComponent from "@/src/components/Dropdown";
+import SectionContainer from "@/src/components/SectionContainer";
 import { boolOptions } from "@/src/constants/boolOptions";
 import { regions } from "@/src/constants/regions";
 import { LOADING } from "@/src/constants/status";
@@ -117,8 +118,7 @@ const CustomerForm = ({
 
       <View style={styles.formContainer}>
         <ScrollView>
-          <Text style={styles.sectionHeader}>Customer Information</Text>
-          <View style={styles.customerContainer}>
+          <SectionContainer title="Customer Information">
             {isEditMode && (
               <View style={[styles.labelContainer, styles.inlineLabel]}>
                 <Text style={[styles.label]}>Customer ID:</Text>
@@ -161,9 +161,8 @@ const CustomerForm = ({
                 setValue={handleRegionChange}
               />
             </View>
-          </View>
-          <Text style={styles.sectionHeader}>Contact Information</Text>
-          <View style={styles.customerContainer}>
+          </SectionContainer>
+          <SectionContainer title="Contact Information">
             <View style={styles.labelContainer}>
               <Text style={styles.label}>Cell Number:</Text>
               <TextInput
@@ -196,9 +195,8 @@ const CustomerForm = ({
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
             </View>
-          </View>
-          <Text style={styles.sectionHeader}>Other</Text>
-          <View style={styles.customerContainer}>
+          </SectionContainer>
+          <SectionContainer title="Other">
             <View style={styles.labelContainer}>
               <Text style={styles.label}>Notes:</Text>
               <TextInput
@@ -212,7 +210,7 @@ const CustomerForm = ({
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
             </View>
-          </View>
+          </SectionContainer>
         </ScrollView>
       </View>
       <Button onPress={handleSubmitForm} title="Save Customer" />
