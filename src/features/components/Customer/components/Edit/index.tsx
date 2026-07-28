@@ -1,6 +1,6 @@
 import { useRoute } from "@react-navigation/native";
 
-import CustomerForm from "@/src/features/components/Customer/components/form";
+import CustomerForm from "@/src/features/components/Customer/components/Form";
 import {
   useEditCustomer,
   useEditCustomerStatus,

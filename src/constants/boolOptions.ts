@@ -1,4 +1,4 @@
 export const boolOptions = [
-  { label: "Yes", value: "true" },
-  { label: "No", value: "false" },
+  { label: "YES", value: "true" },
+  { label: "NO", value: "false" },
 ];

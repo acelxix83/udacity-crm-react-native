@@ -1,7 +1,10 @@
+import { useNavigation } from "@react-navigation/native";
+import { Text, View } from "react-native";
+
+import Button from "@/src/components/Button";
 import { useClearState } from "@/src/features/shared/hooks";
 import { clearStorage } from "@/src/utilities/asyncStorage";
-import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import stylesFn from "./styles";
 
 const Welcome = () => {
   const navigation = useNavigation<any>();
@@ -13,40 +16,14 @@ const Welcome = () => {
     await clearStorage();
   };
 
+  const styles = stylesFn();
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Welcome</Text>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate("Regions")}
-      >
-        <Text style={styles.text}>Click to continue...</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={handleClearStorage}>
-        <Text style={styles.text}>Clear Storage...</Text>
-      </TouchableOpacity>
+      <Text style={[styles.h1, styles.centeredText]}>Udacity CRM</Text>
+      <Button title="Regions" onPress={() => navigation.navigate("Regions")} />
+      <Button title="Clear Storage..." onPress={handleClearStorage} />
     </View>
   );
 };
 
 export default Welcome;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 20,
-  },
-  text: {
-    fontSize: 24,
-    textAlign: "center",
-    color: "#000",
-  },
-  button: {
-    backgroundColor: "#007AFF",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    marginTop: 20,
-  },
-});

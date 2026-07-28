@@ -1,0 +1,20 @@
+import { StyleSheet } from "react-native";
+
+const stylesFn = () => {
+  return StyleSheet.create({
+    container: {
+      flex: 1,
+      alignItems: "center",
+      justifyContent: "space-between",
+      padding: 20,
+    },
+    h1: {
+      fontSize: 32,
+    },
+    centeredText: {
+      textAlign: "center",
+    },
+  });
+};
+
+export default stylesFn;

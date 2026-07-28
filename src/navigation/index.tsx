@@ -9,26 +9,31 @@ import EditCustomerScreen from "@/src/screens/EditCustomer";
 import NewCustomerScreen from "@/src/screens/NewCustomer";
 import RegionListScreen from "@/src/screens/RegionList";
 import HomeScreen from "@/src/screens/Welcome";
+import stylesFn, { Theme } from "./styles";
 
 const Stack = createNativeStackNavigator();
 
 const Navigator = () => {
   const { isLoading } = useLoadState();
+  const styles = stylesFn();
 
   if (isLoading) {
     return (
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <ActivityIndicator size="large" color="#2a7ad6" />
-        <Text style={{ marginTop: 10, color: "#2a7ad6" }}>Loading...</Text>
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color={styles.spinner.color} />
+        <Text style={styles.text}>Loading...</Text>
       </View>
     );
   }
 
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={Theme}>
       <Stack.Navigator
         initialRouteName="Home"
-        screenOptions={{ headerShown: true }}
+        screenOptions={{
+          headerShown: true,
+          contentStyle: styles.navigatorBackground,
+        }}
       >
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Regions" component={RegionListScreen} />

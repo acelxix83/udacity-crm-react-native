@@ -1,13 +1,10 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { FlatList, Text, TouchableOpacity, View } from "react-native";
 import { useSelector } from "react-redux";
-import CustomerView from "../../Customer/components/view";
+
+import Button from "@/src/components/Button";
+import CustomerView from "@/src/features/components/Customer/components/View";
+import stylesFn from "./styles";
 
 const Region = () => {
   const navigation = useNavigation<any>();
@@ -19,6 +16,7 @@ const Region = () => {
         state.region.list.regions[regionId as string]?.customerIds,
     ) ?? [];
   const hasCustomers = regionCustomerIds.length > 0;
+  const styles = stylesFn();
 
   return (
     <View style={styles.container}>
@@ -41,39 +39,12 @@ const Region = () => {
           </TouchableOpacity>
         )}
       />
-      <TouchableOpacity
-        style={styles.button}
+      <Button
         onPress={() => navigation.navigate("NewCustomer", { regionId })}
-      >
-        <Text style={styles.text}>Create Customer</Text>
-      </TouchableOpacity>
+        title="Create Customer"
+      />
     </View>
   );
 };
 
 export default Region;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 20,
-  },
-  text: {
-    fontSize: 24,
-    textAlign: "center",
-    color: "#000",
-  },
-  instructions: {
-    fontSize: 18,
-    color: "#000",
-    marginTop: 20,
-  },
-  button: {
-    backgroundColor: "#007AFF",
-    padding: 10,
-    borderRadius: 5,
-    alignItems: "center",
-    marginTop: 20,
-  },
-});
