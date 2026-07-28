@@ -115,6 +115,11 @@ const CustomerForm = ({
     handleSubmit(customerRequest);
   };
 
+  const handleCancel = () => {
+    //TODO: add confirmation if form is dirty
+    navigation.goBack();
+  };
+
   /**
    * Handle navigation back to the previous screen after the request is completed.
    * This effect runs whenever the status, navigation, submitClicked, or requestLoading changes.
@@ -255,7 +260,10 @@ const CustomerForm = ({
           </SectionContainer>
         </ScrollView>
       </View>
-      <Button onPress={handleSubmitForm} title="Save Customer" />
+      <View style={styles.row}>
+        <Button onPress={handleCancel} title="Cancel" flex={1} />
+        <Button onPress={handleSubmitForm} title="Save" flex={1} />
+      </View>
     </View>
   );
 };

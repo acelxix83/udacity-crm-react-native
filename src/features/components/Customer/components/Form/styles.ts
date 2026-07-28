@@ -65,6 +65,11 @@ const stylesFn = () => {
     toUpper: {
       textTransform: "uppercase",
     },
+    row: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      gap: 20,
+    },
   });
 };
 
