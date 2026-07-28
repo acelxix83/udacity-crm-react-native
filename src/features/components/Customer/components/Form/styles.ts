@@ -5,7 +5,6 @@ const stylesFn = () => {
     container: {
       flex: 1,
       padding: 20,
-      paddingTop: 0,
     },
     formContainer: {
       flex: 1,

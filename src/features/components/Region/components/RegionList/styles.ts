@@ -13,7 +13,6 @@ const stylesFn = () =>
     },
     instructions: {
       fontSize: 18,
-      marginTop: 20,
     },
   });
 

@@ -12,6 +12,9 @@ const stylesFn = () => {
       color: "#fff",
       width: "65%",
     },
+    contentContainer: {
+      paddingBottom: 20,
+    },
   });
 };
 

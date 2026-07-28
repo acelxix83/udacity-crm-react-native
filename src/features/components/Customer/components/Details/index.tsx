@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { Text, View } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 
 import Button from "@/src/components/Button";
@@ -23,7 +23,7 @@ const CustomerDetails = () => {
 
   return (
     <View style={styles.customerDetailsContainer}>
-      <View>
+      <ScrollView>
         <CustomerView
           customerId={customerId}
           regionId={customer?.regionId || null}
@@ -49,7 +49,7 @@ const CustomerDetails = () => {
             <Text style={styles.text}>{customer?.notes || DEFAULT_TEXT}</Text>
           </LabelContainer>
         </SectionContainer>
-      </View>
+      </ScrollView>
       <Button
         onPress={() => navigation.navigate("EditCustomer", { customerId })}
         title="Edit Customer"
