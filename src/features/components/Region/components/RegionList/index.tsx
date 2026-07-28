@@ -11,7 +11,6 @@ const RegionList = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>Regions</Text>
       <Text style={styles.instructions}>Select a region:</Text>
       <FlatList
         data={regions}

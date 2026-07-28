@@ -3,8 +3,9 @@ import { useSelector } from "react-redux";
 
 import LabelContainer from "@/src/components/LabelContainer";
 import SectionContainer from "@/src/components/SectionContainer";
-import { regions } from "@/src/constants/regions";
 import { Customer } from "@/src/types";
+import { getIsActiveLabel, getRegionLabel } from "@/src/utilities/helper";
+
 import stylesFn from "./styles";
 
 const CustomerView = ({
@@ -25,12 +26,6 @@ const CustomerView = ({
     return null;
   }
 
-  const getRegionLabel = (regionId: string | null) => {
-    if (!regionId) return "N/A";
-    const region = regions.find((region) => region.value === regionId);
-    return region ? region.label : "N/A";
-  };
-
   return (
     <SectionContainer title={title}>
       <LabelContainer label="ID:">
@@ -44,7 +39,7 @@ const CustomerView = ({
       </LabelContainer>
       <LabelContainer label="Active:">
         <Text style={[styles.text, styles.toUpper]}>
-          {customer.isActive ? "Yes" : "No"}
+          {getIsActiveLabel(customer.isActive)}
         </Text>
       </LabelContainer>
       <LabelContainer label="Region:">

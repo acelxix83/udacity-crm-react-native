@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   ScrollView,
@@ -14,7 +15,7 @@ import LabelContainer from "@/src/components/LabelContainer";
 import SectionContainer from "@/src/components/SectionContainer";
 import { boolOptions } from "@/src/constants/boolOptions";
 import { regions } from "@/src/constants/regions";
-import { LOADING } from "@/src/constants/status";
+import { IDLE, LOADING } from "@/src/constants/status";
 import { Customer, CustomerRequest } from "@/src/types";
 import stylesFn from "./styles";
 
@@ -27,6 +28,9 @@ const CustomerForm = ({
   status: string;
   customerId: string | null;
 }) => {
+  const route = useRoute<any>();
+  const currentRegionId = route.params?.regionId as string;
+  const navigation = useNavigation<any>();
   const isEditMode = customerId !== null;
   //TODO: memoize this form
   const customer = useSelector(
@@ -49,11 +53,15 @@ const CustomerForm = ({
   const [isActive, setIsActive] = useState(
     customer.isActive ? "true" : "false",
   );
-  const [regionId, setRegionId] = useState(customer.regionId);
+  const [regionId, setRegionId] = useState(
+    customer.regionId ?? currentRegionId ?? null,
+  );
   const [cell, setCell] = useState(customer.cell ?? "");
   const [mobile, setMobile] = useState(customer.mobile ?? "");
   const [email, setEmail] = useState(customer.email ?? "");
   const [notes, setNotes] = useState(customer.notes ?? "");
+  const [submitClicked, setSubmitClicked] = useState(false);
+  const [requestLoading, setRequestLoading] = useState(false);
 
   const handleFirstNameChange = (text: string) => {
     setFirstName(text);
@@ -103,8 +111,29 @@ const CustomerForm = ({
 
     const originalRegion = customer.regionId;
     const customerRequest = { originalRegion, customer: customerData };
+    setSubmitClicked(true);
     handleSubmit(customerRequest);
   };
+
+  /**
+   * Handle navigation back to the previous screen after the request is completed.
+   * This effect runs whenever the status, navigation, submitClicked, or requestLoading changes.
+   * If the submit button has not been clicked, it does nothing.
+   */
+  useEffect(() => {
+    if (!submitClicked) {
+      return;
+    }
+    if (status === LOADING) {
+      setRequestLoading(true);
+      return;
+    }
+    if (requestLoading && status === IDLE) {
+      setRequestLoading(false);
+      setSubmitClicked(false);
+      navigation.goBack();
+    }
+  }, [status, navigation, submitClicked, requestLoading]);
 
   return (
     <View style={styles.container}>

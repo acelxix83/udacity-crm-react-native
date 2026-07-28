@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 import Button from "@/src/components/Button";
 import CustomerView from "@/src/features/components/Customer/components/View";
+import { getRegionLabel } from "@/src/utilities/helper";
 import stylesFn from "./styles";
 
 const Region = () => {
@@ -20,8 +21,14 @@ const Region = () => {
 
   return (
     <View style={styles.container}>
-      {!hasCustomers && (
+      <Text style={styles.h1}>{getRegionLabel(regionId)}</Text>
+      <Text style={styles.h2}>Customer Count: {regionCustomerIds.length}</Text>
+      {!hasCustomers ? (
         <Text style={styles.instructions}>No customers yet.</Text>
+      ) : (
+        <Text style={styles.instructions}>
+          Select a customer to view details:
+        </Text>
       )}
       <FlatList
         data={regionCustomerIds}
