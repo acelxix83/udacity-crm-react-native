@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 
 import Button from "@/src/components/Button";
 import DropdownComponent from "@/src/components/Dropdown";
+import LabelContainer from "@/src/components/LabelContainer";
 import SectionContainer from "@/src/components/SectionContainer";
 import { boolOptions } from "@/src/constants/boolOptions";
 import { regions } from "@/src/constants/regions";
@@ -120,13 +121,20 @@ const CustomerForm = ({
         <ScrollView>
           <SectionContainer title="Customer Information">
             {isEditMode && (
-              <View style={[styles.labelContainer, styles.inlineLabel]}>
-                <Text style={[styles.label]}>Customer ID:</Text>
+              <LabelContainer
+                label="Customer ID:"
+                isInline={true}
+                labelWidth="40%"
+                containerStyle={styles.inlineLabel}
+              >
                 <Text style={[styles.text, styles.toUpper]}>{customer.id}</Text>
-              </View>
+              </LabelContainer>
             )}
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>First Name:</Text>
+            <LabelContainer
+              label="First Name:"
+              isInline={false}
+              labelWidth="40%"
+            >
               <TextInput
                 style={styles.textInput}
                 value={firstName}
@@ -134,9 +142,12 @@ const CustomerForm = ({
                 placeholder="First Name"
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
-            </View>
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>Last Name:</Text>
+            </LabelContainer>
+            <LabelContainer
+              label="Last Name:"
+              isInline={false}
+              labelWidth="40%"
+            >
               <TextInput
                 style={styles.textInput}
                 value={lastName}
@@ -144,27 +155,28 @@ const CustomerForm = ({
                 placeholder="Last Name"
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
-            </View>
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>Active:</Text>
+            </LabelContainer>
+            <LabelContainer label="Active:" isInline={false} labelWidth="40%">
               <DropdownComponent
                 data={boolOptions}
                 value={isActive}
                 setValue={handleIsActiveChange}
               />
-            </View>
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>Region:</Text>
+            </LabelContainer>
+            <LabelContainer label="Region:" isInline={false} labelWidth="40%">
               <DropdownComponent
                 data={regions}
                 value={regionId}
                 setValue={handleRegionChange}
               />
-            </View>
+            </LabelContainer>
           </SectionContainer>
           <SectionContainer title="Contact Information">
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>Cell Number:</Text>
+            <LabelContainer
+              label="Cell Number:"
+              isInline={false}
+              labelWidth="40%"
+            >
               <TextInput
                 style={styles.textInput}
                 value={cell}
@@ -173,9 +185,12 @@ const CustomerForm = ({
                 maxLength={10}
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
-            </View>
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>Mobile Number:</Text>
+            </LabelContainer>
+            <LabelContainer
+              label="Mobile Number:"
+              isInline={false}
+              labelWidth="40%"
+            >
               <TextInput
                 style={styles.textInput}
                 value={mobile}
@@ -184,9 +199,8 @@ const CustomerForm = ({
                 maxLength={10}
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
-            </View>
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>Email:</Text>
+            </LabelContainer>
+            <LabelContainer label="Email:" isInline={false} labelWidth="40%">
               <TextInput
                 style={styles.textInput}
                 value={email}
@@ -194,11 +208,10 @@ const CustomerForm = ({
                 placeholder="Email"
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
-            </View>
+            </LabelContainer>
           </SectionContainer>
           <SectionContainer title="Other">
-            <View style={styles.labelContainer}>
-              <Text style={styles.label}>Notes:</Text>
+            <LabelContainer label="Notes:" isInline={false} labelWidth="40%">
               <TextInput
                 style={[styles.textInput, styles.textArea]}
                 value={notes}
@@ -209,7 +222,7 @@ const CustomerForm = ({
                 maxLength={200}
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
-            </View>
+            </LabelContainer>
           </SectionContainer>
         </ScrollView>
       </View>

@@ -1,6 +1,7 @@
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 import { useSelector } from "react-redux";
 
+import LabelContainer from "@/src/components/LabelContainer";
 import SectionContainer from "@/src/components/SectionContainer";
 import { regions } from "@/src/constants/regions";
 import { Customer } from "@/src/types";
@@ -32,30 +33,25 @@ const CustomerView = ({
 
   return (
     <SectionContainer title={title}>
-      <View style={styles.labelContainer}>
-        <Text style={styles.label}>ID:</Text>
+      <LabelContainer label="ID:">
         <Text style={[styles.text, styles.toUpper]}>{customer.id}</Text>
-      </View>
-      <View style={styles.labelContainer}>
-        <Text style={styles.label}>First Name:</Text>
+      </LabelContainer>
+      <LabelContainer label="First Name:">
         <Text style={[styles.text, styles.toUpper]}>{customer.firstName}</Text>
-      </View>
-      <View style={styles.labelContainer}>
-        <Text style={styles.label}>Last Name:</Text>
+      </LabelContainer>
+      <LabelContainer label="Last Name:">
         <Text style={[styles.text, styles.toUpper]}>{customer.lastName}</Text>
-      </View>
-      <View style={styles.labelContainer}>
-        <Text style={styles.label}>Active:</Text>
+      </LabelContainer>
+      <LabelContainer label="Active:">
         <Text style={[styles.text, styles.toUpper]}>
           {customer.isActive ? "Yes" : "No"}
         </Text>
-      </View>
-      <View style={styles.labelContainer}>
-        <Text style={styles.label}>Region:</Text>
+      </LabelContainer>
+      <LabelContainer label="Region:">
         <Text style={[styles.text, styles.toUpper]}>
           {getRegionLabel(regionId)}
         </Text>
-      </View>
+      </LabelContainer>
     </SectionContainer>
   );
 };

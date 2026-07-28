@@ -3,6 +3,7 @@ import { Text, View } from "react-native";
 import { useSelector } from "react-redux";
 
 import Button from "@/src/components/Button";
+import LabelContainer from "@/src/components/LabelContainer";
 import SectionContainer from "@/src/components/SectionContainer";
 import { DEFAULT_TEXT } from "@/src/constants/defaultValues";
 import { formatCellNumber } from "@/src/utilities/helper";
@@ -29,28 +30,24 @@ const CustomerDetails = () => {
           title="Customer Information"
         />
         <SectionContainer title="Contact Information">
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>Cell:</Text>
+          <LabelContainer label="Cell:">
             <Text style={styles.text}>
               {formatCellNumber(customer?.cell || DEFAULT_TEXT)}
             </Text>
-          </View>
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>Mobile:</Text>
+          </LabelContainer>
+          <LabelContainer label="Mobile:">
             <Text style={styles.text}>
               {formatCellNumber(customer?.mobile || DEFAULT_TEXT)}
             </Text>
-          </View>
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>Email:</Text>
+          </LabelContainer>
+          <LabelContainer label="Email:">
             <Text style={styles.text}>{customer?.email || DEFAULT_TEXT}</Text>
-          </View>
+          </LabelContainer>
         </SectionContainer>
         <SectionContainer title="Other">
-          <View style={styles.labelContainer}>
-            <Text style={styles.label}>Notes:</Text>
+          <LabelContainer label="Notes:">
             <Text style={styles.text}>{customer?.notes || DEFAULT_TEXT}</Text>
-          </View>
+          </LabelContainer>
         </SectionContainer>
       </View>
       <Button

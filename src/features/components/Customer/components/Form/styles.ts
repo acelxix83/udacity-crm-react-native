@@ -54,27 +54,13 @@ const stylesFn = () => {
     textArea: {
       height: 120,
     },
-    label: {
-      fontSize: 14,
-      fontWeight: "bold",
-      width: "40%",
-      color: "#fff",
-    },
     text: {
       fontSize: 14,
       color: "#fff",
       width: "65%",
     },
-    labelContainer: {
-      justifyContent: "space-between",
-      marginTop: 0,
-      marginBottom: 0,
-      gap: 8,
-    },
     inlineLabel: {
       marginBottom: 10,
-      justifyContent: "space-between",
-      flexDirection: "row",
     },
     toUpper: {
       textTransform: "uppercase",
