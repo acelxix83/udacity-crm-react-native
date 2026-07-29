@@ -9,7 +9,7 @@ import Button from "@/src/components/Button";
 import LabelContainer from "@/src/components/LabelContainer";
 import SectionContainer from "@/src/components/SectionContainer";
 import { DEFAULT_TEXT } from "@/src/constants/defaultValues";
-import { formatCellNumber } from "@/src/utilities/helper";
+import { formatPhoneNumber } from "@/src/utilities/helper";
 import CustomerView from "../View";
 import stylesFn from "./styles";
 
@@ -68,14 +68,14 @@ const CustomerDetails = () => {
           title="Customer Information"
         />
         <SectionContainer title="Contact Information">
-          <LabelContainer label="Cell:">
-            <Text style={styles.text}>
-              {formatCellNumber(customer?.cell || DEFAULT_TEXT)}
-            </Text>
-          </LabelContainer>
           <LabelContainer label="Mobile:">
             <Text style={styles.text}>
-              {formatCellNumber(customer?.mobile || DEFAULT_TEXT)}
+              {formatPhoneNumber(customer?.mobile || DEFAULT_TEXT)}
+            </Text>
+          </LabelContainer>
+          <LabelContainer label="Home:">
+            <Text style={styles.text}>
+              {formatPhoneNumber(customer?.home || DEFAULT_TEXT)}
             </Text>
           </LabelContainer>
           <LabelContainer label="Email:">

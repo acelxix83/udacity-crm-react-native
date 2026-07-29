@@ -56,7 +56,7 @@ const CustomerForm = ({
   const [regionId, setRegionId] = useState(
     customer.regionId ?? currentRegionId ?? null,
   );
-  const [cell, setCell] = useState(customer.cell ?? "");
+  const [home, setHome] = useState(customer.home ?? "");
   const [mobile, setMobile] = useState(customer.mobile ?? "");
   const [email, setEmail] = useState(customer.email ?? "");
   const [notes, setNotes] = useState(customer.notes ?? "");
@@ -79,8 +79,8 @@ const CustomerForm = ({
     setRegionId(text !== "" ? text : null);
   };
 
-  const handleCellChange = (text: string) => {
-    setCell(text);
+  const handleHomeChange = (text: string) => {
+    setHome(text);
   };
 
   const handleMobileChange = (text: string) => {
@@ -103,7 +103,7 @@ const CustomerForm = ({
       lastName,
       isActive: isActive === "true",
       regionId: regionId !== null ? regionId : null,
-      cell,
+      home,
       mobile,
       email,
       notes,
@@ -207,20 +207,6 @@ const CustomerForm = ({
           </SectionContainer>
           <SectionContainer title="Contact Information">
             <LabelContainer
-              label="Cell Number:"
-              isInline={false}
-              labelWidth="40%"
-            >
-              <TextInput
-                style={styles.textInput}
-                value={cell}
-                onChangeText={handleCellChange}
-                placeholder="Cell Number"
-                maxLength={10}
-                placeholderTextColor={styles.textInputPlaceholder.color}
-              />
-            </LabelContainer>
-            <LabelContainer
               label="Mobile Number:"
               isInline={false}
               labelWidth="40%"
@@ -230,6 +216,20 @@ const CustomerForm = ({
                 value={mobile}
                 onChangeText={handleMobileChange}
                 placeholder="Mobile Number"
+                maxLength={10}
+                placeholderTextColor={styles.textInputPlaceholder.color}
+              />
+            </LabelContainer>
+            <LabelContainer
+              label="Home Number:"
+              isInline={false}
+              labelWidth="40%"
+            >
+              <TextInput
+                style={styles.textInput}
+                value={home}
+                onChangeText={handleHomeChange}
+                placeholder="Home Number"
                 maxLength={10}
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
