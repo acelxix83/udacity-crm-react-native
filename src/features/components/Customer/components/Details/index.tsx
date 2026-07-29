@@ -1,4 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
+import type { NotificationTriggerInput } from "expo-notifications";
+import * as Notifications from "expo-notifications";
+import { useEffect } from "react";
 import { ScrollView, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 
@@ -11,6 +14,20 @@ import CustomerView from "../View";
 import stylesFn from "./styles";
 
 const CustomerDetails = () => {
+  const trigger: NotificationTriggerInput = {
+    type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+    seconds: 10,
+    repeats: false,
+  };
+  const handleRemindMe = () => {
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "Contact Customer",
+        body: `Customer: ${customer?.firstName || DEFAULT_TEXT} ${customer?.lastName || DEFAULT_TEXT}`,
+      },
+      trigger: trigger,
+    });
+  };
   const navigation = useNavigation<any>();
   const route = useRoute<any>();
   const customerId = route.params?.customerId as string;
@@ -20,6 +37,27 @@ const CustomerDetails = () => {
   );
 
   const styles = stylesFn();
+
+  const askNotifications = async () => {
+    const { status }: Notifications.PermissionResponse =
+      await Notifications.getPermissionsAsync();
+    if (status !== "granted") {
+      await Notifications.requestPermissionsAsync();
+    }
+  };
+
+  useEffect(() => {
+    askNotifications();
+
+    const listener = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log("Notification response received:", response);
+      },
+    );
+    return () => {
+      listener.remove();
+    };
+  }, []);
 
   return (
     <View style={styles.customerDetailsContainer}>
@@ -49,6 +87,7 @@ const CustomerDetails = () => {
             <Text style={styles.text}>{customer?.notes || DEFAULT_TEXT}</Text>
           </LabelContainer>
         </SectionContainer>
+        <Button onPress={handleRemindMe} title="Set Reminder" />
       </ScrollView>
       <Button
         onPress={() => navigation.navigate("EditCustomer", { customerId })}

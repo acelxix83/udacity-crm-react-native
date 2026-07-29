@@ -3,14 +3,9 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "src/navigation/index.ts"
-  ]
+  "include": ["**/*.ts", "**/*.tsx", "src/navigation/index.ts"],
+  "exclude": ["node_modules"]
 }
