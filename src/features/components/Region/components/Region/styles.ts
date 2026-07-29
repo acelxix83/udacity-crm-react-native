@@ -8,8 +8,9 @@ const stylesFn = () =>
       padding: 20,
     },
     instructions: {
-      fontSize: 18,
+      fontSize: 20,
       marginTop: 20,
+      marginBottom: 20,
     },
     h1: {
       fontSize: 24,

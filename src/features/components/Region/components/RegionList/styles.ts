@@ -12,7 +12,7 @@ const stylesFn = () =>
       textAlign: "center",
     },
     instructions: {
-      fontSize: 18,
+      fontSize: 20,
     },
   });
 

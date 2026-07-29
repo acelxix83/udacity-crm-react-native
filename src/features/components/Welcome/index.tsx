@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 
 import Button from "@/src/components/Button";
 import { useClearState } from "@/src/features/shared/hooks";
@@ -19,9 +19,23 @@ const Welcome = () => {
   const styles = stylesFn();
   return (
     <View style={styles.container}>
-      <Text style={[styles.h1, styles.centeredText]}>Udacity CRM</Text>
-      <Button title="Regions" onPress={() => navigation.navigate("Regions")} />
-      <Button title="Clear Storage..." onPress={handleClearStorage} />
+      <View style={styles.logoContainer}>
+        <Image source={require("@/assets/logo.svg")} style={styles.logo} />
+        <Text style={[styles.logoText, styles.centeredText]}>UdaCRM</Text>
+      </View>
+      <Text style={[styles.h1, styles.centeredText]}>Welcome to UdaCRM!</Text>
+      <Text style={[styles.h1, styles.centeredText]}>
+        Select Regions to view the list of regions and add customers to each
+        region. You can also clear the cache to reset the app state.
+      </Text>
+      <View style={styles.row}>
+        <Button title="Clear Cache" onPress={handleClearStorage} flex={1} />
+        <Button
+          title="Regions"
+          onPress={() => navigation.navigate("Regions")}
+          flex={1}
+        />
+      </View>
     </View>
   );
 };
