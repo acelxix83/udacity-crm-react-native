@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
-import { Image, Text, View, useWindowDimensions } from "react-native";
+import { Image } from "expo-image";
+import { Text, View, useWindowDimensions } from "react-native";
 
 import Button from "@/src/components/Button";
 import { useClearState } from "@/src/features/shared/hooks";
