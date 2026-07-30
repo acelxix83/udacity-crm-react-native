@@ -50,8 +50,9 @@ const CustomerDetails = () => {
     askNotifications();
 
     const listener = Notifications.addNotificationResponseReceivedListener(
-      (response) => {
-        console.log("Notification response received:", response);
+      () => {
+        //TODO: Navigate to the customer details screen when the notification is tapped
+        // navigation.navigate("CustomerDetails", { customerId });
       },
     );
     return () => {

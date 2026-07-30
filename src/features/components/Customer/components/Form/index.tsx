@@ -40,7 +40,6 @@ const CustomerForm = ({
   status: string;
   customerId: string | null;
 }) => {
-  console.log("CustomerForm rendered with customerId:", customerId);
   const route = useRoute<any>();
   const currentRegionId = route.params?.regionId as string;
   const navigation = useNavigation<any>();
