@@ -7,8 +7,8 @@ const stylesFn = ({
   width: number;
   height: number;
 }) => {
-  const logoWidth = Math.max(350, Math.min(screenWidth * 0.91, 700));
-  const logoHeight = Math.max(300, Math.min(screenHeight * 0.32, 600));
+  const logoWidth = Math.min(screenWidth * 0.91, 700);
+  const logoHeight = Math.min(screenHeight * 0.5, 600);
 
   return StyleSheet.create({
     container: {
