@@ -1,21 +1,24 @@
-import { appTheme } from "@/src/theme";
+import { getAppTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
-const stylesFn = ({ flex }: { flex?: number }) =>
-  StyleSheet.create({
+const stylesFn = ({ flex }: { flex?: number }) => {
+  const theme = getAppTheme();
+
+  return StyleSheet.create({
     button: {
-      backgroundColor: appTheme.colors.primary.main,
-      padding: appTheme.spacing.md,
-      borderRadius: appTheme.radius.md,
+      backgroundColor: theme.colors.primary.main,
+      padding: theme.spacing.md,
+      borderRadius: theme.radius.md,
       alignItems: "center",
-      marginTop: appTheme.spacing.lg,
+      marginTop: theme.spacing.lg,
       ...(flex !== undefined ? { flex } : {}),
     },
     text: {
-      fontSize: appTheme.typography.title,
+      fontSize: theme.typography.title,
       textAlign: "center",
-      color: appTheme.colors.text.onPrimary,
+      color: theme.colors.text.onPrimary,
     },
   });
+};
 
 export default stylesFn;

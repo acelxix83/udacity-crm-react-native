@@ -1,7 +1,14 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import { Alert, ScrollView, Text, TextInput, View } from "react-native";
+import {
+  Alert,
+  ScrollView,
+  Text,
+  TextInput,
+  View,
+  useColorScheme,
+} from "react-native";
 
 import Toast from "react-native-toast-message";
 import { useSelector } from "react-redux";
@@ -61,6 +68,7 @@ const CustomerForm = ({
   status: string;
   customerId: string | null;
 }) => {
+  const colorScheme = useColorScheme();
   const route = useRoute<any>();
   const currentRegionId = route.params?.regionId as string;
   const navigation = useNavigation<any>();
@@ -71,7 +79,7 @@ const CustomerForm = ({
       (state: any) => state.customer.list.customers[customerId as string],
     ) ?? DEFAULT_CUSTOMER;
 
-  const styles = useMemo(() => stylesFn(), []);
+  const styles = useMemo(() => stylesFn(), [colorScheme]);
   const initialFormValues = useMemo(
     () => ({
       firstName: customer.firstName ?? "",

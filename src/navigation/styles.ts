@@ -1,7 +1,9 @@
-import { appTheme, navigationTheme } from "@/src/theme";
+import { getAppTheme, getNavigationTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
 const stylesFn = () => {
+  const theme = getAppTheme();
+
   return StyleSheet.create({
     navigatorBackground: {
       // backgroundColor: "#1E1E1E"
@@ -12,38 +14,38 @@ const stylesFn = () => {
       justifyContent: "center",
     },
     h1: {
-      fontSize: appTheme.typography.title,
+      fontSize: theme.typography.title,
       fontWeight: "bold",
-      color: appTheme.colors.text.onPrimary,
+      color: theme.colors.text.onPrimary,
     },
     spinner: {
-      color: appTheme.colors.text.onPrimary,
+      color: theme.colors.text.onPrimary,
     },
     overlay: {
-      padding: appTheme.spacing.lg,
+      padding: theme.spacing.lg,
       position: "absolute",
       top: 0,
       left: 0,
       right: 0,
       height: "100%",
-      backgroundColor: appTheme.colors.background.overlay,
+      backgroundColor: theme.colors.background.overlay,
       zIndex: 1,
       alignItems: "center",
       justifyContent: "center",
     },
     overlayMessageContainer: {
-      padding: appTheme.spacing.md,
+      padding: theme.spacing.md,
       width: "80%",
-      borderRadius: appTheme.radius.lg,
-      borderWidth: appTheme.sizes.borderRegular,
-      borderColor: appTheme.colors.border.primary,
-      backgroundColor: appTheme.colors.primary.strong,
+      borderRadius: theme.radius.lg,
+      borderWidth: theme.sizes.borderRegular,
+      borderColor: theme.colors.border.primary,
+      backgroundColor: theme.colors.primary.strong,
       alignItems: "center",
       justifyContent: "center",
     },
   });
 };
 
-export const Theme = navigationTheme;
+export const Theme = getNavigationTheme("light");
 
 export default stylesFn;

@@ -1,4 +1,4 @@
-import { appTheme } from "@/src/theme";
+import { getAppTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
 const stylesFn = ({
@@ -8,6 +8,7 @@ const stylesFn = ({
   width: number;
   height: number;
 }) => {
+  const theme = getAppTheme();
   const logoWidth = Math.min(screenWidth * 0.91, 700);
   const logoHeight = Math.min(screenHeight * 0.5, 600);
 
@@ -15,20 +16,22 @@ const stylesFn = ({
     container: {
       flex: 1,
       justifyContent: "space-between",
-      padding: appTheme.spacing.lg,
+      padding: theme.spacing.lg,
     },
     h1: {
-      fontSize: appTheme.typography.hero,
+      fontSize: theme.typography.hero,
       textAlign: "center",
+      color: theme.colors.text.default,
     },
     text: {
-      fontSize: appTheme.typography.section,
-      padding: appTheme.spacing.md,
+      fontSize: theme.typography.section,
+      padding: theme.spacing.md,
+      color: theme.colors.text.default,
     },
     row: {
       flexDirection: "row",
       justifyContent: "space-between",
-      gap: appTheme.spacing.md + 1,
+      gap: theme.spacing.md + 1,
     },
     logoContainer: {
       justifyContent: "center",

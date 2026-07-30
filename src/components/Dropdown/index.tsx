@@ -1,5 +1,5 @@
 import { memo, useEffect, useMemo, useState } from "react";
-import { View } from "react-native";
+import { View, useColorScheme } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
 import stylesFn from "./styles";
@@ -23,11 +23,12 @@ const DropdownComponent = ({
   onChangeValue: (value: string) => void;
   label?: string;
 }) => {
+  const colorScheme = useColorScheme();
   const [isFocus, setIsFocus] = useState(false);
   const [selectedValue, setSelectedValue] = useState<string | null>(
     initialValue ?? null,
   );
-  const styles = useMemo(() => stylesFn(), []);
+  const styles = useMemo(() => stylesFn(), [colorScheme]);
 
   useEffect(() => {
     setSelectedValue(initialValue ?? null);

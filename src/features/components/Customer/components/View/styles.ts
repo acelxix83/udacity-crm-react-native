@@ -1,11 +1,13 @@
-import { appTheme } from "@/src/theme";
+import { getAppTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
 const stylesFn = () => {
+  const theme = getAppTheme();
+
   return StyleSheet.create({
     text: {
-      fontSize: appTheme.typography.bodySm,
-      color: appTheme.colors.text.onPrimary,
+      fontSize: theme.typography.bodySm,
+      color: theme.colors.text.onPrimary,
       width: "65%",
     },
     toUpper: {

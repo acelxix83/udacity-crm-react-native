@@ -5,8 +5,8 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as Notifications from "expo-notifications";
-import { useCallback, useEffect, useRef } from "react";
-import { ActivityIndicator, Text, View } from "react-native";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import { ActivityIndicator, Text, View, useColorScheme } from "react-native";
 
 import CustomerDetailsScreen from "@/src/screens/CustomerDetails";
 import CustomerListScreen from "@/src/screens/CustomerList";
@@ -14,15 +14,21 @@ import EditCustomerScreen from "@/src/screens/EditCustomer";
 import NewCustomerScreen from "@/src/screens/NewCustomer";
 import RegionListScreen from "@/src/screens/RegionList";
 import HomeScreen from "@/src/screens/Welcome";
-import stylesFn, { Theme } from "./styles";
+import { getNavigationTheme } from "@/src/theme";
+import stylesFn from "./styles";
 
 const Stack = createNativeStackNavigator();
 const navigationRef = createNavigationContainerRef<any>();
 
 const Navigator = () => {
+  const colorScheme = useColorScheme();
   const { isLoading } = useLoadState();
   const { isSaving } = useSavingState();
   const styles = stylesFn();
+  const navigationTheme = useMemo(
+    () => getNavigationTheme(colorScheme),
+    [colorScheme],
+  );
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   const pendingCustomerIdRef = useRef<string | null>(null);
   const handledNotificationIdRef = useRef<string | null>(null);
@@ -102,7 +108,7 @@ const Navigator = () => {
       )}
       <NavigationContainer
         ref={navigationRef}
-        theme={Theme}
+        theme={navigationTheme}
         onReady={handleNavigationReady}
       >
         <Stack.Navigator

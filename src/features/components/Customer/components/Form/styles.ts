@@ -1,50 +1,52 @@
-import { appTheme } from "@/src/theme";
+import { getAppTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
 const stylesFn = () => {
-  const errorColor = appTheme.colors.error.main;
+  const theme = getAppTheme();
+  const errorColor = theme.colors.error.main;
   return StyleSheet.create({
     container: {
       flex: 1,
-      padding: appTheme.spacing.lg,
+      padding: theme.spacing.lg,
     },
     formContainer: {
       flex: 1,
       justifyContent: "space-between",
     },
     h1: {
-      fontSize: appTheme.typography.title,
+      fontSize: theme.typography.title,
       fontWeight: "bold",
-      color: appTheme.colors.text.onPrimary,
+      color: theme.colors.text.default,
     },
     textInputPlaceholder: {
-      color: appTheme.colors.text.placeholder,
+      color: theme.colors.text.placeholder,
     },
     textInput: {
-      fontSize: appTheme.typography.bodySm,
+      fontSize: theme.typography.bodySm,
       fontWeight: "bold",
-      borderWidth: appTheme.sizes.borderRegular,
-      borderColor: appTheme.colors.border.default,
-      borderRadius: appTheme.radius.sm,
-      padding: appTheme.spacing.md,
-      backgroundColor: appTheme.colors.background.card,
-      marginBottom: appTheme.spacing.lg,
+      borderWidth: theme.sizes.borderRegular,
+      borderColor: theme.colors.border.default,
+      borderRadius: theme.radius.sm,
+      padding: theme.spacing.md,
+      backgroundColor: theme.colors.background.card,
+      marginBottom: theme.spacing.lg,
+      color: theme.colors.text.default,
     },
     errorInput: {
       borderColor: errorColor,
-      borderWidth: appTheme.sizes.borderThick,
-      backgroundColor: appTheme.colors.error.surface,
+      borderWidth: theme.sizes.borderThick,
+      backgroundColor: theme.colors.error.surface,
     },
     textArea: {
-      height: appTheme.sizes.textAreaHeight,
+      height: theme.sizes.textAreaHeight,
     },
     text: {
-      fontSize: appTheme.typography.bodySm,
-      color: appTheme.colors.text.onPrimary,
+      fontSize: theme.typography.bodySm,
+      color: theme.colors.text.onPrimary,
       width: "65%",
     },
     inlineLabel: {
-      marginBottom: appTheme.spacing.md,
+      marginBottom: theme.spacing.md,
     },
     toUpper: {
       textTransform: "uppercase",
@@ -52,13 +54,13 @@ const stylesFn = () => {
     row: {
       flexDirection: "row",
       justifyContent: "space-between",
-      gap: appTheme.spacing.lg,
+      gap: theme.spacing.lg,
     },
     errorText: {
       color: errorColor,
-      fontSize: appTheme.typography.bodySm,
-      marginTop: -appTheme.spacing.xl,
-      marginBottom: appTheme.spacing.lgPlus,
+      fontSize: theme.typography.bodySm,
+      marginTop: -theme.spacing.xl,
+      marginBottom: theme.spacing.lgPlus,
       fontWeight: "bold",
     },
   });

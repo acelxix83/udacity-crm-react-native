@@ -1,35 +1,72 @@
 import { DefaultTheme, Theme } from "@react-navigation/native";
+import { Appearance, ColorSchemeName } from "react-native";
 
-export const appTheme = {
-  mode: "light" as const,
+export interface AppTheme {
+  mode: string;
   colors: {
     primary: {
-      main: "#2a7ad6",
-      soft: "#5996db",
-      strong: "#2a7ad6e8",
-    },
+      main: string;
+      soft: string;
+      strong: string;
+    };
     text: {
-      default: "#121212",
-      muted: "#4a4a4a",
-      onPrimary: "#fff",
-      placeholder: "#bbb",
-    },
+      default: string;
+      muted: string;
+      onPrimary: string;
+      placeholder: string;
+    };
     background: {
-      app: "#fff",
-      card: "#fff",
-      overlay: "#00000086",
-    },
+      app: string;
+      card: string;
+      overlay: string;
+    };
     border: {
-      default: "#ccc",
-      soft: "gray",
-      focus: "blue",
-      primary: "#2a7ad6",
-    },
+      default: string;
+      soft: string;
+      focus: string;
+      primary: string;
+    };
     error: {
-      main: "#c91111",
-      surface: "#fff4f4",
-    },
-  },
+      main: string;
+      surface: string;
+    };
+  };
+  spacing: {
+    xxs: number;
+    xs: number;
+    smPlus: number;
+    sm: number;
+    md: number;
+    lgPlus: number;
+    lg: number;
+    xl: number;
+  };
+  radius: {
+    sm: number;
+    md: number;
+    lg: number;
+    xl: number;
+  };
+  typography: {
+    bodySm: number;
+    bodyMd: number;
+    bodyLg: number;
+    section: number;
+    title: number;
+    hero: number;
+  };
+  sizes: {
+    controlHeight: number;
+    searchInputHeight: number;
+    icon: number;
+    textAreaHeight: number;
+    borderThin: number;
+    borderRegular: number;
+    borderThick: number;
+  };
+}
+
+const sharedTokens = {
   spacing: {
     xxs: 2,
     xs: 4,
@@ -65,15 +102,93 @@ export const appTheme = {
   },
 };
 
-export const navigationTheme: Theme = {
-  ...DefaultTheme,
+const lightTheme: AppTheme = {
+  mode: "light",
   colors: {
-    ...DefaultTheme.colors,
-    primary: appTheme.colors.primary.main,
-    background: appTheme.colors.background.app,
-    card: appTheme.colors.background.card,
-    text: appTheme.colors.text.default,
-    border: appTheme.colors.border.default,
-    notification: appTheme.colors.primary.main,
+    primary: {
+      main: "#2a7ad6",
+      soft: "#5996db",
+      strong: "#2a7ad6e8",
+    },
+    text: {
+      default: "#121212",
+      muted: "#4a4a4a",
+      onPrimary: "#fff",
+      placeholder: "#bbb",
+    },
+    background: {
+      app: "#fff",
+      card: "#fff",
+      overlay: "#00000086",
+    },
+    border: {
+      default: "#ccc",
+      soft: "gray",
+      focus: "blue",
+      primary: "#2a7ad6",
+    },
+    error: {
+      main: "#c91111",
+      surface: "#fff4f4",
+    },
   },
+  ...sharedTokens,
 };
+
+const darkTheme: AppTheme = {
+  mode: "dark",
+  colors: {
+    primary: {
+      main: "#5c9fff",
+      soft: "#2f5e9d",
+      strong: "#2f5e9de8",
+    },
+    text: {
+      default: "#e6ebf2",
+      muted: "#aeb8c7",
+      onPrimary: "#f7fbff",
+      placeholder: "#8d96a3",
+    },
+    background: {
+      app: "#0f1218",
+      card: "#171d27",
+      overlay: "#000000a6",
+    },
+    border: {
+      default: "#3b4452",
+      soft: "#5d6675",
+      focus: "#79b2ff",
+      primary: "#5c9fff",
+    },
+    error: {
+      main: "#ff5c5c",
+      surface: "#4f1e1e",
+    },
+  },
+  ...sharedTokens,
+};
+
+export const getAppTheme = (scheme?: ColorSchemeName): AppTheme => {
+  const resolvedScheme = scheme ?? Appearance.getColorScheme();
+  return resolvedScheme === "dark" ? darkTheme : lightTheme;
+};
+
+export const getNavigationTheme = (scheme?: ColorSchemeName): Theme => {
+  const activeTheme = getAppTheme(scheme);
+  return {
+    ...DefaultTheme,
+    dark: activeTheme.mode === "dark",
+    colors: {
+      ...DefaultTheme.colors,
+      primary: activeTheme.colors.primary.main,
+      background: activeTheme.colors.background.app,
+      card: activeTheme.colors.background.card,
+      text: activeTheme.colors.text.default,
+      border: activeTheme.colors.border.default,
+      notification: activeTheme.colors.primary.main,
+    },
+  };
+};
+
+export const appTheme = getAppTheme("light");
+export const navigationTheme = getNavigationTheme("light");

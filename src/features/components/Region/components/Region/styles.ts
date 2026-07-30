@@ -1,27 +1,33 @@
-import { appTheme } from "@/src/theme";
+import { getAppTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
-const stylesFn = () =>
-  StyleSheet.create({
+const stylesFn = () => {
+  const theme = getAppTheme();
+
+  return StyleSheet.create({
     container: {
       flex: 1,
       justifyContent: "center",
-      padding: appTheme.spacing.lg,
+      padding: theme.spacing.lg,
     },
     instructions: {
-      fontSize: appTheme.typography.section,
-      marginTop: appTheme.spacing.lg,
-      marginBottom: appTheme.spacing.lg,
+      fontSize: theme.typography.section,
+      marginTop: theme.spacing.lg,
+      marginBottom: theme.spacing.lg,
+      color: theme.colors.text.default,
     },
     h1: {
-      fontSize: appTheme.typography.title,
+      fontSize: theme.typography.title,
       fontWeight: "bold",
+      color: theme.colors.text.default,
     },
     h2: {
-      fontSize: appTheme.typography.bodyLg,
+      fontSize: theme.typography.bodyLg,
       fontWeight: "bold",
-      marginTop: appTheme.spacing.md,
+      marginTop: theme.spacing.md,
+      color: theme.colors.text.default,
     },
   });
+};
 
 export default stylesFn;
