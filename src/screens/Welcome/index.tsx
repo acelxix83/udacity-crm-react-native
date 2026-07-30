@@ -1,4 +1,5 @@
 import Welcome from "@/src/features/components/Welcome";
+import { ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import stylesFn from "../styles";
 
@@ -7,7 +8,9 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <Welcome />
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+        <Welcome />
+      </ScrollView>
     </SafeAreaView>
   );
 }
