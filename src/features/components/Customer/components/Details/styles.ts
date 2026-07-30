@@ -17,9 +17,6 @@ const stylesFn = () => {
       marginTop: 5,
       marginBottom: 10,
     },
-    contentContainer: {
-      paddingBottom: 20,
-    },
   });
 };
 
