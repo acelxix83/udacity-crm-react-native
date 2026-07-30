@@ -26,7 +26,7 @@ const Welcome = () => {
         <Image
           source={require("@/assets/logo.svg")}
           style={styles.logo}
-          resizeMode="contain"
+          contentFit="contain"
         />
       </View>
       <Text style={styles.h1}>Welcome to UdaCRM!</Text>
