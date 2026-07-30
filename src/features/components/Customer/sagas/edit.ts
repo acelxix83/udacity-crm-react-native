@@ -3,6 +3,7 @@ import * as actions from "@/src/features/components/Customer/reducers";
 import { Customer, CustomerRequest, CustomerResult } from "@/src/types";
 import { set } from "@/src/utilities/asyncStorage";
 import { call, put, select, takeLatest } from "redux-saga/effects";
+import { editCustomer } from "../services";
 
 export function* watchEditCustomer() {
   yield takeLatest(actions.editCustomer.type, editCustomerSaga);
@@ -13,19 +14,17 @@ function* editCustomerSaga(action: { type: string; payload: CustomerRequest }) {
     const customers: Record<string, Customer> = yield select(
       (state) => state.customer.list.customers,
     );
-    const editCustomer = action.payload.customer;
-    yield call(
-      () =>
-        // Simulate API call delay
-        new Promise((resolve) => setTimeout(resolve, 1000)),
+    const editCustomerRequest = action.payload.customer;
+    const editedCustomer: Customer = yield call(() =>
+      editCustomer(editCustomerRequest),
     );
     const updatedCustomers: Record<string, Customer> = {
       ...customers,
-      [editCustomer.id as string]: editCustomer,
+      [editCustomerRequest.id as string]: editedCustomer,
     };
 
     const result: CustomerResult = {
-      customerId: editCustomer.id as string,
+      customerId: editedCustomer.id as string,
       originalRegion: action.payload.originalRegion,
       customers: updatedCustomers,
     };
