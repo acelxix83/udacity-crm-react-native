@@ -1,19 +1,20 @@
+import { appTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
 const stylesFn = () => {
   return StyleSheet.create({
     container: {
-      padding: 20,
-      borderWidth: 2,
-      borderColor: "#2a7ad6",
-      borderRadius: 20,
-      marginBottom: 20,
-      backgroundColor: "#5996db",
+      padding: appTheme.spacing.lg,
+      borderWidth: appTheme.sizes.borderThick,
+      borderColor: appTheme.colors.border.primary,
+      borderRadius: appTheme.radius.xl,
+      marginBottom: appTheme.spacing.lg,
+      backgroundColor: appTheme.colors.primary.soft,
     },
     title: {
-      fontSize: 18,
+      fontSize: appTheme.typography.bodyLg,
       fontWeight: "bold",
-      marginBottom: 10,
+      marginBottom: appTheme.spacing.md,
     },
   });
 };

@@ -1,3 +1,4 @@
+import { appTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
 const stylesFn = () =>
@@ -5,10 +6,10 @@ const stylesFn = () =>
     container: {
       flex: 1,
       justifyContent: "center",
-      padding: 20,
+      padding: appTheme.spacing.lg,
     },
     instructions: {
-      fontSize: 20,
+      fontSize: appTheme.typography.section,
     },
   });
 

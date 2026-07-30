@@ -1,21 +1,22 @@
+import { appTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
 const stylesFn = () => {
   return StyleSheet.create({
     customerDetailsContainer: {
-      padding: 20,
+      padding: appTheme.spacing.lg,
       justifyContent: "space-between",
       height: "100%",
     },
     text: {
-      fontSize: 14,
-      color: "#fff",
+      fontSize: appTheme.typography.bodySm,
+      color: appTheme.colors.text.onPrimary,
       width: "65%",
     },
     instructions: {
-      fontSize: 16,
-      marginTop: 5,
-      marginBottom: 10,
+      fontSize: appTheme.typography.bodyMd,
+      marginTop: appTheme.spacing.smPlus,
+      marginBottom: appTheme.spacing.md,
     },
   });
 };

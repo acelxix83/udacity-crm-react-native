@@ -1,3 +1,4 @@
+import { appTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
 const stylesFn = () =>
@@ -5,21 +6,21 @@ const stylesFn = () =>
     container: {
       flex: 1,
       justifyContent: "center",
-      padding: 20,
+      padding: appTheme.spacing.lg,
     },
     instructions: {
-      fontSize: 20,
-      marginTop: 20,
-      marginBottom: 20,
+      fontSize: appTheme.typography.section,
+      marginTop: appTheme.spacing.lg,
+      marginBottom: appTheme.spacing.lg,
     },
     h1: {
-      fontSize: 24,
+      fontSize: appTheme.typography.title,
       fontWeight: "bold",
     },
     h2: {
-      fontSize: 18,
+      fontSize: appTheme.typography.bodyLg,
       fontWeight: "bold",
-      marginTop: 10,
+      marginTop: appTheme.spacing.md,
     },
   });
 

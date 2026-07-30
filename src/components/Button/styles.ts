@@ -1,19 +1,20 @@
+import { appTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
 const stylesFn = ({ flex }: { flex?: number }) =>
   StyleSheet.create({
     button: {
-      backgroundColor: "#2a7ad6",
-      padding: 10,
-      borderRadius: 8,
+      backgroundColor: appTheme.colors.primary.main,
+      padding: appTheme.spacing.md,
+      borderRadius: appTheme.radius.md,
       alignItems: "center",
-      marginTop: 20,
+      marginTop: appTheme.spacing.lg,
       ...(flex !== undefined ? { flex } : {}),
     },
     text: {
-      fontSize: 24,
+      fontSize: appTheme.typography.title,
       textAlign: "center",
-      color: "#fff",
+      color: appTheme.colors.text.onPrimary,
     },
   });
 

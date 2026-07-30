@@ -1,4 +1,4 @@
-import { DefaultTheme } from "@react-navigation/native";
+import { appTheme, navigationTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
 const stylesFn = () => {
@@ -12,53 +12,38 @@ const stylesFn = () => {
       justifyContent: "center",
     },
     h1: {
-      fontSize: 24,
+      fontSize: appTheme.typography.title,
       fontWeight: "bold",
-      color: "#fff",
+      color: appTheme.colors.text.onPrimary,
     },
     spinner: {
-      color: "#fff",
+      color: appTheme.colors.text.onPrimary,
     },
     overlay: {
-      padding: 20,
+      padding: appTheme.spacing.lg,
       position: "absolute",
       top: 0,
       left: 0,
       right: 0,
       height: "100%",
-      backgroundColor: "#00000086",
+      backgroundColor: appTheme.colors.background.overlay,
       zIndex: 1,
       alignItems: "center",
       justifyContent: "center",
     },
     overlayMessageContainer: {
-      padding: 10,
+      padding: appTheme.spacing.md,
       width: "80%",
-      borderRadius: 10,
-      borderWidth: 1,
-      borderColor: "#2a7ad6",
-      backgroundColor: "#2a7ad6e8",
+      borderRadius: appTheme.radius.lg,
+      borderWidth: appTheme.sizes.borderRegular,
+      borderColor: appTheme.colors.border.primary,
+      backgroundColor: appTheme.colors.primary.strong,
       alignItems: "center",
       justifyContent: "center",
     },
   });
 };
 
-export const Theme = {
-  ...DefaultTheme,
-  colors: {
-    ...DefaultTheme.colors,
-    primary: "#2a7ad6",
-    // background: "#1E1E1E",
-    // text: "#fff",
-    // card: "#2a2a2a",
-    // border: "#2a2a2a",
-    // notification: "#2a7ad6",
-  },
-  dark: DefaultTheme.dark,
-  fonts: {
-    ...DefaultTheme.fonts,
-  },
-};
+export const Theme = navigationTheme;
 
 export default stylesFn;

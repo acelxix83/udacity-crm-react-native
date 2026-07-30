@@ -1,49 +1,50 @@
+import { appTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
 const stylesFn = () => {
-  const errorColor = "#c91111";
+  const errorColor = appTheme.colors.error.main;
   return StyleSheet.create({
     container: {
       flex: 1,
-      padding: 20,
+      padding: appTheme.spacing.lg,
     },
     formContainer: {
       flex: 1,
       justifyContent: "space-between",
     },
     h1: {
-      fontSize: 24,
+      fontSize: appTheme.typography.title,
       fontWeight: "bold",
-      color: "#fff",
+      color: appTheme.colors.text.onPrimary,
     },
     textInputPlaceholder: {
-      color: "#bbb",
+      color: appTheme.colors.text.placeholder,
     },
     textInput: {
-      fontSize: 14,
+      fontSize: appTheme.typography.bodySm,
       fontWeight: "bold",
-      borderWidth: 1,
-      borderColor: "#ccc",
-      borderRadius: 5,
-      padding: 10,
-      backgroundColor: "#fff",
-      marginBottom: 20,
+      borderWidth: appTheme.sizes.borderRegular,
+      borderColor: appTheme.colors.border.default,
+      borderRadius: appTheme.radius.sm,
+      padding: appTheme.spacing.md,
+      backgroundColor: appTheme.colors.background.card,
+      marginBottom: appTheme.spacing.lg,
     },
     errorInput: {
       borderColor: errorColor,
-      borderWidth: 2,
-      backgroundColor: "#fff4f4",
+      borderWidth: appTheme.sizes.borderThick,
+      backgroundColor: appTheme.colors.error.surface,
     },
     textArea: {
-      height: 120,
+      height: appTheme.sizes.textAreaHeight,
     },
     text: {
-      fontSize: 14,
-      color: "#fff",
+      fontSize: appTheme.typography.bodySm,
+      color: appTheme.colors.text.onPrimary,
       width: "65%",
     },
     inlineLabel: {
-      marginBottom: 10,
+      marginBottom: appTheme.spacing.md,
     },
     toUpper: {
       textTransform: "uppercase",
@@ -51,13 +52,13 @@ const stylesFn = () => {
     row: {
       flexDirection: "row",
       justifyContent: "space-between",
-      gap: 20,
+      gap: appTheme.spacing.lg,
     },
     errorText: {
       color: errorColor,
-      fontSize: 15,
-      marginTop: -25,
-      marginBottom: 15,
+      fontSize: appTheme.typography.bodySm,
+      marginTop: -appTheme.spacing.xl,
+      marginBottom: appTheme.spacing.lgPlus,
       fontWeight: "bold",
     },
   });

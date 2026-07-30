@@ -1,38 +1,39 @@
+import { appTheme } from "@/src/theme";
 import { StyleSheet } from "react-native";
 
 const stylesFn = () => {
   return StyleSheet.create({
     container: {
       // backgroundColor: "white",
-      marginTop: 2,
+      marginTop: appTheme.spacing.xxs,
       marginBottom: 3,
     },
     dropdown: {
-      height: 50,
-      backgroundColor: "white",
-      borderColor: "gray",
-      borderWidth: 0.5,
-      borderRadius: 8,
-      paddingHorizontal: 8,
-      marginBottom: 5,
+      height: appTheme.sizes.controlHeight,
+      backgroundColor: appTheme.colors.background.card,
+      borderColor: appTheme.colors.border.soft,
+      borderWidth: appTheme.sizes.borderThin,
+      borderRadius: appTheme.radius.md,
+      paddingHorizontal: appTheme.spacing.sm,
+      marginBottom: appTheme.spacing.smPlus,
     },
     focusedDropdown: {
-      borderColor: "blue",
+      borderColor: appTheme.colors.border.focus,
     },
     placeholderStyle: {
-      fontSize: 16,
+      fontSize: appTheme.typography.bodyMd,
     },
     selectedTextStyle: {
-      fontSize: 16,
+      fontSize: appTheme.typography.bodyMd,
       fontWeight: "bold",
     },
     iconStyle: {
-      width: 20,
-      height: 20,
+      width: appTheme.sizes.icon,
+      height: appTheme.sizes.icon,
     },
     inputSearchStyle: {
-      height: 40,
-      fontSize: 16,
+      height: appTheme.sizes.searchInputHeight,
+      fontSize: appTheme.typography.bodyMd,
     },
   });
 };
