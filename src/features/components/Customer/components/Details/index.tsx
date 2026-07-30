@@ -24,6 +24,9 @@ const CustomerDetails = () => {
       content: {
         title: "Contact Customer",
         body: `Customer: ${customer?.firstName || DEFAULT_TEXT} ${customer?.lastName || DEFAULT_TEXT}`,
+        data: {
+          customerId,
+        },
       },
       trigger: trigger,
     });
@@ -48,16 +51,6 @@ const CustomerDetails = () => {
 
   useEffect(() => {
     askNotifications();
-
-    const listener = Notifications.addNotificationResponseReceivedListener(
-      () => {
-        //TODO: Navigate to the customer details screen when the notification is tapped
-        // navigation.navigate("CustomerDetails", { customerId });
-      },
-    );
-    return () => {
-      listener.remove();
-    };
   }, []);
 
   return (
