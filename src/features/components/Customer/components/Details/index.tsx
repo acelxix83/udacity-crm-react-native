@@ -88,6 +88,9 @@ const CustomerDetails = () => {
           </LabelContainer>
         </SectionContainer>
         <Button onPress={handleRemindMe} title="Set Reminder" />
+        <Text style={styles.instructions}>
+          Reminder will be set for 10 seconds from now.
+        </Text>
       </ScrollView>
       <Button
         onPress={() => navigation.navigate("EditCustomer", { customerId })}
