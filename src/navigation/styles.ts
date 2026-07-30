@@ -5,9 +5,6 @@ const stylesFn = () => {
   const theme = getAppTheme();
 
   return StyleSheet.create({
-    navigatorBackground: {
-      // backgroundColor: "#1E1E1E"
-    },
     container: {
       flex: 1,
       alignItems: "center",

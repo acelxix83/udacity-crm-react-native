@@ -6,7 +6,13 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as Notifications from "expo-notifications";
 import { useCallback, useEffect, useMemo, useRef } from "react";
-import { ActivityIndicator, Text, View, useColorScheme } from "react-native";
+import {
+  ActivityIndicator,
+  Platform,
+  Text,
+  View,
+  useColorScheme,
+} from "react-native";
 
 import CustomerDetailsScreen from "@/src/screens/CustomerDetails";
 import CustomerListScreen from "@/src/screens/CustomerList";
@@ -21,6 +27,7 @@ const Stack = createNativeStackNavigator();
 const navigationRef = createNavigationContainerRef<any>();
 
 const Navigator = () => {
+  const isWeb = Platform.OS === "web";
   const colorScheme = useColorScheme();
   const { isLoading } = useLoadState();
   const { isSaving } = useSavingState();
@@ -29,7 +36,6 @@ const Navigator = () => {
     () => getNavigationTheme(colorScheme),
     [colorScheme],
   );
-  const lastNotificationResponse = Notifications.useLastNotificationResponse();
   const pendingCustomerIdRef = useRef<string | null>(null);
   const handledNotificationIdRef = useRef<string | null>(null);
 
@@ -79,20 +85,23 @@ const Navigator = () => {
   );
 
   useEffect(() => {
+    if (isWeb) {
+      return;
+    }
+
     // Handle tap when app resumes from background.
     const listener = Notifications.addNotificationResponseReceivedListener(
       handleNotificationResponse,
     );
 
+    // Handle tap that launched the app from a terminated state.
+    const lastResponse = Notifications.getLastNotificationResponse();
+    handleNotificationResponse(lastResponse);
+
     return () => {
       listener.remove();
     };
-  }, [handleNotificationResponse]);
-
-  useEffect(() => {
-    // Handle tap that launched the app from a terminated state.
-    handleNotificationResponse(lastNotificationResponse);
-  }, [lastNotificationResponse, handleNotificationResponse]);
+  }, [handleNotificationResponse, isWeb]);
 
   return (
     <>
@@ -115,7 +124,6 @@ const Navigator = () => {
           initialRouteName="Home"
           screenOptions={{
             headerShown: false,
-            contentStyle: styles.navigatorBackground,
           }}
         >
           <Stack.Screen name="Home" component={HomeScreen} />

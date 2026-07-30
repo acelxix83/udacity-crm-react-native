@@ -3,11 +3,11 @@ import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 import {
   Alert,
+  Platform,
   ScrollView,
   Text,
   TextInput,
   View,
-  useColorScheme,
 } from "react-native";
 
 import Toast from "react-native-toast-message";
@@ -68,7 +68,6 @@ const CustomerForm = ({
   status: string;
   customerId: string | null;
 }) => {
-  const colorScheme = useColorScheme();
   const route = useRoute<any>();
   const currentRegionId = route.params?.regionId as string;
   const navigation = useNavigation<any>();
@@ -79,7 +78,7 @@ const CustomerForm = ({
       (state: any) => state.customer.list.customers[customerId as string],
     ) ?? DEFAULT_CUSTOMER;
 
-  const styles = useMemo(() => stylesFn(), [colorScheme]);
+  const styles = useMemo(() => stylesFn(), []);
   const initialFormValues = useMemo(
     () => ({
       firstName: customer.firstName ?? "",
@@ -116,6 +115,23 @@ const CustomerForm = ({
       }
 
       e.preventDefault();
+
+      const confirmLeave = () => {
+        navigation.dispatch(e.data.action);
+      };
+
+      if (typeof window !== "undefined" && Platform.OS === "web") {
+        const confirmed = window.confirm(
+          "You have unsaved changes. Are you sure you want to leave?",
+        );
+
+        if (confirmed) {
+          confirmLeave();
+        }
+
+        return;
+      }
+
       Alert.alert(
         "Discard changes?",
         "You have unsaved changes. Are you sure you want to leave?",
@@ -124,7 +140,7 @@ const CustomerForm = ({
           {
             text: "Discard",
             style: "destructive",
-            onPress: () => navigation.dispatch(e.data.action),
+            onPress: confirmLeave,
           },
         ],
         { cancelable: true },
@@ -339,6 +355,20 @@ const CustomerForm = ({
   };
 
   const handleCancel = () => {
+    if (
+      typeof window !== "undefined" &&
+      Platform.OS === "web" &&
+      isDirtyRef.current
+    ) {
+      const confirmed = window.confirm(
+        "You have unsaved changes. Are you sure you want to leave?",
+      );
+
+      if (!confirmed) {
+        return;
+      }
+    }
+
     navigation.goBack();
   };
 

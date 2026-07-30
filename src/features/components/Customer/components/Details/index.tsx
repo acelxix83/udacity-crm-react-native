@@ -1,8 +1,8 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import type { NotificationTriggerInput } from "expo-notifications";
 import * as Notifications from "expo-notifications";
-import { useEffect } from "react";
-import { ScrollView, Text, View } from "react-native";
+import { useCallback, useEffect } from "react";
+import { Platform, ScrollView, Text, View } from "react-native";
 import { useSelector } from "react-redux";
 
 import Button from "@/src/components/Button";
@@ -14,12 +14,21 @@ import CustomerView from "../View";
 import stylesFn from "./styles";
 
 const CustomerDetails = () => {
-  const trigger: NotificationTriggerInput = {
-    type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
-    seconds: 10,
-    repeats: false,
-  };
+  const isWeb = Platform.OS === "web";
   const handleRemindMe = () => {
+    if (isWeb) {
+      window.alert(
+        "Notifications are currently available on native platforms only.",
+      );
+      return;
+    }
+
+    const trigger: NotificationTriggerInput = {
+      type: Notifications.SchedulableTriggerInputTypes.TIME_INTERVAL,
+      seconds: 10,
+      repeats: false,
+    };
+
     Notifications.scheduleNotificationAsync({
       content: {
         title: "Contact Customer",
@@ -41,17 +50,21 @@ const CustomerDetails = () => {
 
   const styles = stylesFn();
 
-  const askNotifications = async () => {
+  const askNotifications = useCallback(async () => {
+    if (isWeb) {
+      return;
+    }
+
     const { status }: Notifications.PermissionResponse =
       await Notifications.getPermissionsAsync();
     if (status !== "granted") {
       await Notifications.requestPermissionsAsync();
     }
-  };
+  }, [isWeb]);
 
   useEffect(() => {
     askNotifications();
-  }, []);
+  }, [askNotifications]);
 
   return (
     <View style={styles.customerDetailsContainer}>

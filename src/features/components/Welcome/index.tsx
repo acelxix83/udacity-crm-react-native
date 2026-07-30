@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
-import { Alert, Text, View, useWindowDimensions } from "react-native";
+import { Alert, Platform, Text, View, useWindowDimensions } from "react-native";
 
 import Button from "@/src/components/Button";
 import { useClearState } from "@/src/features/shared/hooks";
@@ -14,7 +14,21 @@ const Welcome = () => {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
   const handleClearStorage = async (e: any) => {
-    e.preventDefault();
+    e?.preventDefault?.();
+
+    if (Platform.OS === "web") {
+      const confirmed = window.confirm(
+        "Are you sure you want to clear the cache?",
+      );
+      if (!confirmed) {
+        return;
+      }
+
+      clearState();
+      await clearStorage();
+      return;
+    }
+
     Alert.alert(
       "Clear Cache?",
       "Are you sure you want to clear the cache?",
