@@ -6,7 +6,7 @@ const Button = ({
   title,
   flex,
 }: {
-  onPress: () => void;
+  onPress: (e: any) => void;
   title: string;
   flex?: number;
 }) => {

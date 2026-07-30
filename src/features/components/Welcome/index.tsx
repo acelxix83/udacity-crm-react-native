@@ -1,6 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { Image } from "expo-image";
-import { Text, View, useWindowDimensions } from "react-native";
+import { Alert, Text, View, useWindowDimensions } from "react-native";
 
 import Button from "@/src/components/Button";
 import { useClearState } from "@/src/features/shared/hooks";
@@ -13,10 +13,24 @@ const Welcome = () => {
 
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
 
-  const handleClearStorage = async () => {
-    //TODO: Add confirmation dialog before clearing storage
-    clearState();
-    await clearStorage();
+  const handleClearStorage = async (e: any) => {
+    e.preventDefault();
+    Alert.alert(
+      "Clear Cache?",
+      "Are you sure you want to clear the cache?",
+      [
+        { text: "Cancel", style: "cancel" },
+        {
+          text: "Clear",
+          style: "destructive",
+          onPress: async () => {
+            clearState();
+            await clearStorage();
+          },
+        },
+      ],
+      { cancelable: true },
+    );
   };
 
   const styles = stylesFn({ width: screenWidth, height: screenHeight });

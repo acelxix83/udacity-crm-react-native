@@ -126,6 +126,7 @@ const CustomerForm = ({
             onPress: () => navigation.dispatch(e.data.action),
           },
         ],
+        { cancelable: true },
       );
     });
 
