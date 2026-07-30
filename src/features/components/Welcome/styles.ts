@@ -10,6 +10,9 @@ const stylesFn = () => {
     h1: {
       fontSize: 28,
     },
+    text: {
+      fontSize: 23,
+    },
     centeredText: {
       textAlign: "center",
     },

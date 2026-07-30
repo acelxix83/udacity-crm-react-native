@@ -24,7 +24,7 @@ const Welcome = () => {
         <Text style={[styles.logoText, styles.centeredText]}>UdaCRM</Text>
       </View>
       <Text style={[styles.h1, styles.centeredText]}>Welcome to UdaCRM!</Text>
-      <Text style={[styles.h1, styles.centeredText]}>
+      <Text style={[styles.text, styles.centeredText]}>
         Select Regions to view the list of regions and add customers to each
         region. You can also clear the cache to reset the app state.
       </Text>
