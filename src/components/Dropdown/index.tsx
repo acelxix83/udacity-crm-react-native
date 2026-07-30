@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { memo, useEffect, useMemo, useState } from "react";
 import { View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 
@@ -15,16 +15,23 @@ import stylesFn from "./styles";
  */
 const DropdownComponent = ({
   data,
-  value,
-  setValue,
+  initialValue,
+  onChangeValue,
 }: {
   data: { label: string; value: string }[];
-  value: string;
-  setValue: (value: string) => void;
+  initialValue?: string | null;
+  onChangeValue: (value: string) => void;
   label?: string;
 }) => {
   const [isFocus, setIsFocus] = useState(false);
-  const styles = stylesFn();
+  const [selectedValue, setSelectedValue] = useState<string | null>(
+    initialValue ?? null,
+  );
+  const styles = useMemo(() => stylesFn(), []);
+
+  useEffect(() => {
+    setSelectedValue(initialValue ?? null);
+  }, [initialValue]);
 
   return (
     <View style={styles.container}>
@@ -39,11 +46,12 @@ const DropdownComponent = ({
         labelField="label"
         valueField="value"
         placeholder={!isFocus ? "Select item" : "..."}
-        value={value}
+        value={selectedValue}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={(item) => {
-          setValue(item.value);
+          setSelectedValue(item.value);
+          onChangeValue(item.value);
           setIsFocus(false);
         }}
       />
@@ -51,4 +59,4 @@ const DropdownComponent = ({
   );
 };
 
-export default DropdownComponent;
+export default memo(DropdownComponent);

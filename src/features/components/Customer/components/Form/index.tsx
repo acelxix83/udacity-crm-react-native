@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   ScrollView,
@@ -19,6 +19,18 @@ import { IDLE, LOADING } from "@/src/constants/status";
 import { Customer, CustomerRequest } from "@/src/types";
 import stylesFn from "./styles";
 
+const DEFAULT_CUSTOMER = {
+  id: null,
+  firstName: "",
+  lastName: "",
+  isActive: true,
+  regionId: null,
+  home: "",
+  mobile: "",
+  email: "",
+  notes: "",
+};
+
 const CustomerForm = ({
   handleSubmit,
   status,
@@ -28,85 +40,86 @@ const CustomerForm = ({
   status: string;
   customerId: string | null;
 }) => {
+  console.log("CustomerForm rendered with customerId:", customerId);
   const route = useRoute<any>();
   const currentRegionId = route.params?.regionId as string;
   const navigation = useNavigation<any>();
   const isEditMode = customerId !== null;
-  //TODO: memoize this form
-  const customer = useSelector(
-    (state: any) => state.customer.list.customers[customerId as string],
-  ) ?? {
-    id: null,
-    firstName: "",
-    lastName: "",
-    isActive: true,
-    regionId: null,
-    cell: "",
-    mobile: "",
-    email: "",
-    notes: "",
-  };
 
-  const styles = stylesFn();
-  const [firstName, setFirstName] = useState(customer.firstName);
-  const [lastName, setLastName] = useState(customer.lastName);
-  const [isActive, setIsActive] = useState(
-    customer.isActive ? "true" : "false",
+  const customer =
+    useSelector(
+      (state: any) => state.customer.list.customers[customerId as string],
+    ) ?? DEFAULT_CUSTOMER;
+
+  const styles = useMemo(() => stylesFn(), []);
+  const initialFormValues = useMemo(
+    () => ({
+      firstName: customer.firstName ?? "",
+      lastName: customer.lastName ?? "",
+      isActive: customer.isActive ? "true" : "false",
+      regionId: customer.regionId ?? currentRegionId ?? null,
+      home: customer.home ?? "",
+      mobile: customer.mobile ?? "",
+      email: customer.email ?? "",
+      notes: customer.notes ?? "",
+    }),
+    [customer, currentRegionId],
   );
-  const [regionId, setRegionId] = useState(
-    customer.regionId ?? currentRegionId ?? null,
-  );
-  const [home, setHome] = useState(customer.home ?? "");
-  const [mobile, setMobile] = useState(customer.mobile ?? "");
-  const [email, setEmail] = useState(customer.email ?? "");
-  const [notes, setNotes] = useState(customer.notes ?? "");
+  const formValuesRef = useRef(initialFormValues);
+
   const [submitClicked, setSubmitClicked] = useState(false);
   const [requestLoading, setRequestLoading] = useState(false);
 
-  const handleFirstNameChange = (text: string) => {
-    setFirstName(text);
-  };
+  useEffect(() => {
+    formValuesRef.current = initialFormValues;
+  }, [initialFormValues]);
 
-  const handleLastNameChange = (text: string) => {
-    setLastName(text);
-  };
+  const handleFirstNameChange = useCallback((text: string) => {
+    formValuesRef.current.firstName = text;
+  }, []);
 
-  const handleIsActiveChange = (value: string) => {
-    setIsActive(value);
-  };
+  const handleLastNameChange = useCallback((text: string) => {
+    formValuesRef.current.lastName = text;
+  }, []);
 
-  const handleRegionChange = (text: string) => {
-    setRegionId(text !== "" ? text : null);
-  };
+  const handleIsActiveChange = useCallback((value: string) => {
+    formValuesRef.current.isActive = value;
+  }, []);
 
-  const handleHomeChange = (text: string) => {
-    setHome(text);
-  };
+  const handleRegionChange = useCallback((text: string) => {
+    const nextRegionId = text !== "" ? text : null;
+    formValuesRef.current.regionId = nextRegionId;
+  }, []);
 
-  const handleMobileChange = (text: string) => {
-    setMobile(text);
-  };
+  const handleHomeChange = useCallback((text: string) => {
+    formValuesRef.current.home = text;
+  }, []);
 
-  const handleEmailChange = (text: string) => {
-    setEmail(text);
-  };
+  const handleMobileChange = useCallback((text: string) => {
+    formValuesRef.current.mobile = text;
+  }, []);
 
-  const handleNotesChange = (text: string) => {
-    setNotes(text);
-  };
+  const handleEmailChange = useCallback((text: string) => {
+    formValuesRef.current.email = text;
+  }, []);
+
+  const handleNotesChange = useCallback((text: string) => {
+    formValuesRef.current.notes = text;
+  }, []);
 
   const handleSubmitForm = () => {
     //TODO: add validation
+    const formValues = formValuesRef.current;
     const customerData: Customer = {
       id: customerId,
-      firstName,
-      lastName,
-      isActive: isActive === "true",
-      regionId: regionId !== null ? regionId : null,
-      home,
-      mobile,
-      email,
-      notes,
+      firstName: formValues.firstName,
+      lastName: formValues.lastName,
+      isActive: formValues.isActive === "true",
+      regionId: formValues.regionId,
+      home: formValues.home,
+      mobile: formValues.mobile,
+      email: formValues.email,
+      notes: formValues.notes,
     };
 
     const originalRegion = customer.regionId;
@@ -171,7 +184,7 @@ const CustomerForm = ({
             >
               <TextInput
                 style={styles.textInput}
-                value={firstName}
+                defaultValue={initialFormValues.firstName}
                 onChangeText={handleFirstNameChange}
                 placeholder="First Name"
                 placeholderTextColor={styles.textInputPlaceholder.color}
@@ -184,7 +197,7 @@ const CustomerForm = ({
             >
               <TextInput
                 style={styles.textInput}
-                value={lastName}
+                defaultValue={initialFormValues.lastName}
                 onChangeText={handleLastNameChange}
                 placeholder="Last Name"
                 placeholderTextColor={styles.textInputPlaceholder.color}
@@ -193,15 +206,15 @@ const CustomerForm = ({
             <LabelContainer label="Active:" isInline={false} labelWidth="40%">
               <DropdownComponent
                 data={boolOptions}
-                value={isActive}
-                setValue={handleIsActiveChange}
+                initialValue={initialFormValues.isActive}
+                onChangeValue={handleIsActiveChange}
               />
             </LabelContainer>
             <LabelContainer label="Region:" isInline={false} labelWidth="40%">
               <DropdownComponent
                 data={regions}
-                value={regionId}
-                setValue={handleRegionChange}
+                initialValue={initialFormValues.regionId}
+                onChangeValue={handleRegionChange}
               />
             </LabelContainer>
           </SectionContainer>
@@ -213,7 +226,7 @@ const CustomerForm = ({
             >
               <TextInput
                 style={styles.textInput}
-                value={mobile}
+                defaultValue={initialFormValues.mobile}
                 onChangeText={handleMobileChange}
                 placeholder="Mobile Number"
                 maxLength={10}
@@ -227,7 +240,7 @@ const CustomerForm = ({
             >
               <TextInput
                 style={styles.textInput}
-                value={home}
+                defaultValue={initialFormValues.home}
                 onChangeText={handleHomeChange}
                 placeholder="Home Number"
                 maxLength={10}
@@ -237,7 +250,7 @@ const CustomerForm = ({
             <LabelContainer label="Email:" isInline={false} labelWidth="40%">
               <TextInput
                 style={styles.textInput}
-                value={email}
+                defaultValue={initialFormValues.email}
                 onChangeText={handleEmailChange}
                 placeholder="Email"
                 placeholderTextColor={styles.textInputPlaceholder.color}
@@ -248,7 +261,7 @@ const CustomerForm = ({
             <LabelContainer label="Notes:" isInline={false} labelWidth="40%">
               <TextInput
                 style={[styles.textInput, styles.textArea]}
-                value={notes}
+                defaultValue={initialFormValues.notes}
                 onChangeText={handleNotesChange}
                 placeholder="Notes"
                 multiline={true}
@@ -268,4 +281,4 @@ const CustomerForm = ({
   );
 };
 
-export default CustomerForm;
+export default memo(CustomerForm);
