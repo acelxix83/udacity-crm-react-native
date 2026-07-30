@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { Image, Text, View } from "react-native";
+import { Image, Text, View, useWindowDimensions } from "react-native";
 
 import Button from "@/src/components/Button";
 import { useClearState } from "@/src/features/shared/hooks";
@@ -10,21 +10,26 @@ const Welcome = () => {
   const navigation = useNavigation<any>();
   const { clearState } = useClearState();
 
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+
   const handleClearStorage = async () => {
     //TODO: Add confirmation dialog before clearing storage
     clearState();
     await clearStorage();
   };
 
-  const styles = stylesFn();
+  const styles = stylesFn({ width: screenWidth, height: screenHeight });
   return (
     <View style={styles.container}>
       <View style={styles.logoContainer}>
-        <Image source={require("@/assets/logo.svg")} style={styles.logo} />
-        <Text style={[styles.logoText, styles.centeredText]}>UdaCRM</Text>
+        <Image
+          source={require("@/assets/logo.svg")}
+          style={styles.logo}
+          resizeMode="contain"
+        />
       </View>
-      <Text style={[styles.h1, styles.centeredText]}>Welcome to UdaCRM!</Text>
-      <Text style={[styles.text, styles.centeredText]}>
+      <Text style={styles.h1}>Welcome to UdaCRM!</Text>
+      <Text style={styles.text}>
         Select Regions to view the list of regions and add customers to each
         region. You can also clear the cache to reset the app state.
       </Text>

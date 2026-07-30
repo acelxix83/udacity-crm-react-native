@@ -1,6 +1,15 @@
 import { StyleSheet } from "react-native";
 
-const stylesFn = () => {
+const stylesFn = ({
+  width: screenWidth,
+  height: screenHeight,
+}: {
+  width: number;
+  height: number;
+}) => {
+  const logoWidth = Math.max(350, Math.min(screenWidth * 0.91, 700));
+  const logoHeight = Math.max(300, Math.min(screenHeight * 0.32, 600));
+
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -9,12 +18,11 @@ const stylesFn = () => {
     },
     h1: {
       fontSize: 28,
+      textAlign: "center",
     },
     text: {
       fontSize: 23,
-    },
-    centeredText: {
-      textAlign: "center",
+      padding: 10,
     },
     row: {
       flexDirection: "row",
@@ -23,17 +31,12 @@ const stylesFn = () => {
     },
     logoContainer: {
       justifyContent: "center",
+      alignItems: "center",
     },
     logo: {
-      width: "92%",
-      aspectRatio: 3 / 2,
       alignSelf: "center",
-    },
-    logoText: {
-      fontSize: 60,
-      fontWeight: "bold",
-      marginTop: 0,
-      color: "#2a7ad6",
+      width: logoWidth,
+      height: logoHeight,
     },
   });
 };
