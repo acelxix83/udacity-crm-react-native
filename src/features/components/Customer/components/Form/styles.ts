@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 
 const stylesFn = () => {
+  const errorColor = "#c91111";
   return StyleSheet.create({
     container: {
       flex: 1,
@@ -50,6 +51,11 @@ const stylesFn = () => {
       backgroundColor: "#fff",
       marginBottom: 20,
     },
+    errorInput: {
+      borderColor: errorColor,
+      borderWidth: 2,
+      backgroundColor: "#fff4f4",
+    },
     textArea: {
       height: 120,
     },
@@ -68,6 +74,13 @@ const stylesFn = () => {
       flexDirection: "row",
       justifyContent: "space-between",
       gap: 20,
+    },
+    errorText: {
+      color: errorColor,
+      fontSize: 15,
+      marginTop: -25,
+      marginBottom: 15,
+      fontWeight: "bold",
     },
   });
 };

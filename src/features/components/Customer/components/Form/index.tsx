@@ -1,12 +1,16 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+
 import {
   ActivityIndicator,
+  Alert,
   ScrollView,
   Text,
   TextInput,
   View,
 } from "react-native";
+
+import Toast from "react-native-toast-message";
 import { useSelector } from "react-redux";
 
 import Button from "@/src/components/Button";
@@ -15,7 +19,7 @@ import LabelContainer from "@/src/components/LabelContainer";
 import SectionContainer from "@/src/components/SectionContainer";
 import { boolOptions } from "@/src/constants/boolOptions";
 import { regions } from "@/src/constants/regions";
-import { IDLE, LOADING } from "@/src/constants/status";
+import { ERROR, IDLE, LOADING } from "@/src/constants/status";
 import { Customer, CustomerRequest } from "@/src/types";
 import stylesFn from "./styles";
 
@@ -30,6 +34,30 @@ const DEFAULT_CUSTOMER = {
   email: "",
   notes: "",
 };
+
+const EMPTY_FORM_ERRORS = {
+  firstName: "",
+  lastName: "",
+  isActive: "",
+  regionId: "",
+  home: "",
+  mobile: "",
+  email: "",
+  notes: "",
+};
+
+const cloneFormValues = (values: {
+  firstName: string;
+  lastName: string;
+  isActive: string;
+  regionId: string | null;
+  home: string;
+  mobile: string;
+  email: string;
+  notes: string;
+}) => ({
+  ...values,
+});
 
 const CustomerForm = ({
   handleSubmit,
@@ -57,58 +85,239 @@ const CustomerForm = ({
       lastName: customer.lastName ?? "",
       isActive: customer.isActive ? "true" : "false",
       regionId: customer.regionId ?? currentRegionId ?? null,
-      home: customer.home ?? "",
-      mobile: customer.mobile ?? "",
+      home: (customer.home ?? "").replace(/\D/g, "").slice(0, 10),
+      mobile: (customer.mobile ?? "").replace(/\D/g, "").slice(0, 10),
       email: customer.email ?? "",
       notes: customer.notes ?? "",
     }),
     [customer, currentRegionId],
   );
-  const formValuesRef = useRef(initialFormValues);
+  const formValuesRef = useRef(cloneFormValues(initialFormValues));
+  const initialValuesRef = useRef(cloneFormValues(initialFormValues));
+  const isDirtyRef = useRef(false);
+  const homeInputRef = useRef<TextInput | null>(null);
+  const mobileInputRef = useRef<TextInput | null>(null);
+  const [formErrors, setFormErrors] = useState(EMPTY_FORM_ERRORS);
 
   const [submitClicked, setSubmitClicked] = useState(false);
   const [requestLoading, setRequestLoading] = useState(false);
 
   useEffect(() => {
-    formValuesRef.current = initialFormValues;
+    formValuesRef.current = cloneFormValues(initialFormValues);
+    initialValuesRef.current = cloneFormValues(initialFormValues);
+    isDirtyRef.current = false;
   }, [initialFormValues]);
 
-  const handleFirstNameChange = useCallback((text: string) => {
-    formValuesRef.current.firstName = text;
+  useEffect(() => {
+    const unsubscribe = navigation.addListener("beforeRemove", (e: any) => {
+      if (!isDirtyRef.current) {
+        return;
+      }
+
+      e.preventDefault();
+      Alert.alert(
+        "Discard changes?",
+        "You have unsaved changes. Are you sure you want to leave?",
+        [
+          { text: "Don't leave", style: "cancel" },
+          {
+            text: "Discard",
+            style: "destructive",
+            onPress: () => navigation.dispatch(e.data.action),
+          },
+        ],
+      );
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  const updateDirtyState = useCallback(() => {
+    const initialValues = initialValuesRef.current;
+    const currentValues = formValuesRef.current;
+
+    isDirtyRef.current =
+      currentValues.firstName !== initialValues.firstName ||
+      currentValues.lastName !== initialValues.lastName ||
+      currentValues.isActive !== initialValues.isActive ||
+      currentValues.regionId !== initialValues.regionId ||
+      currentValues.home !== initialValues.home ||
+      currentValues.mobile !== initialValues.mobile ||
+      currentValues.email !== initialValues.email ||
+      currentValues.notes !== initialValues.notes;
   }, []);
 
-  const handleLastNameChange = useCallback((text: string) => {
-    formValuesRef.current.lastName = text;
+  const sanitizePhoneInput = useCallback((text: string) => {
+    return text.replace(/\D/g, "").slice(0, 10);
   }, []);
 
-  const handleIsActiveChange = useCallback((value: string) => {
-    formValuesRef.current.isActive = value;
+  const formatPhoneInput = useCallback((digitsOnly: string) => {
+    if (digitsOnly.length <= 3) {
+      return digitsOnly;
+    }
+
+    if (digitsOnly.length <= 6) {
+      return `(${digitsOnly.slice(0, 3)}) ${digitsOnly.slice(3)}`;
+    }
+
+    return `(${digitsOnly.slice(0, 3)}) ${digitsOnly.slice(3, 6)}-${digitsOnly.slice(6)}`;
   }, []);
 
-  const handleRegionChange = useCallback((text: string) => {
-    const nextRegionId = text !== "" ? text : null;
-    formValuesRef.current.regionId = nextRegionId;
+  const clearError = useCallback((field: keyof typeof EMPTY_FORM_ERRORS) => {
+    setFormErrors((prevErrors) => {
+      if (!prevErrors[field]) {
+        return prevErrors;
+      }
+
+      return {
+        ...prevErrors,
+        [field]: "",
+      };
+    });
   }, []);
 
-  const handleHomeChange = useCallback((text: string) => {
-    formValuesRef.current.home = text;
-  }, []);
+  const handleFirstNameChange = useCallback(
+    (text: string) => {
+      formValuesRef.current.firstName = text;
+      updateDirtyState();
+      if (text.trim()) {
+        clearError("firstName");
+      }
+    },
+    [clearError, updateDirtyState],
+  );
 
-  const handleMobileChange = useCallback((text: string) => {
-    formValuesRef.current.mobile = text;
-  }, []);
+  const handleLastNameChange = useCallback(
+    (text: string) => {
+      formValuesRef.current.lastName = text;
+      updateDirtyState();
+      if (text.trim()) {
+        clearError("lastName");
+      }
+    },
+    [clearError, updateDirtyState],
+  );
 
-  const handleEmailChange = useCallback((text: string) => {
-    formValuesRef.current.email = text;
-  }, []);
+  const handleIsActiveChange = useCallback(
+    (value: string) => {
+      formValuesRef.current.isActive = value;
+      updateDirtyState();
+    },
+    [updateDirtyState],
+  );
 
-  const handleNotesChange = useCallback((text: string) => {
-    formValuesRef.current.notes = text;
+  const handleRegionChange = useCallback(
+    (text: string) => {
+      const nextRegionId = text !== "" ? text : null;
+      formValuesRef.current.regionId = nextRegionId;
+      updateDirtyState();
+      if (nextRegionId) {
+        clearError("regionId");
+      }
+    },
+    [clearError, updateDirtyState],
+  );
+
+  const handleHomeChange = useCallback(
+    (text: string) => {
+      const sanitizedText = sanitizePhoneInput(text);
+      const formattedText = formatPhoneInput(sanitizedText);
+      formValuesRef.current.home = sanitizedText;
+      updateDirtyState();
+      if (!sanitizedText || sanitizedText.length === 10) {
+        clearError("home");
+      }
+
+      if (formattedText !== text) {
+        homeInputRef.current?.setNativeProps({ text: formattedText });
+      }
+    },
+    [sanitizePhoneInput, formatPhoneInput, clearError, updateDirtyState],
+  );
+
+  const handleMobileChange = useCallback(
+    (text: string) => {
+      const sanitizedText = sanitizePhoneInput(text);
+      const formattedText = formatPhoneInput(sanitizedText);
+      formValuesRef.current.mobile = sanitizedText;
+      updateDirtyState();
+      if (!sanitizedText || sanitizedText.length === 10) {
+        clearError("mobile");
+      }
+
+      if (formattedText !== text) {
+        mobileInputRef.current?.setNativeProps({ text: formattedText });
+      }
+    },
+    [sanitizePhoneInput, formatPhoneInput, clearError, updateDirtyState],
+  );
+
+  const handleEmailChange = useCallback(
+    (text: string) => {
+      formValuesRef.current.email = text;
+      updateDirtyState();
+      if (!text || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(text)) {
+        clearError("email");
+      }
+    },
+    [clearError, updateDirtyState],
+  );
+
+  const handleNotesChange = useCallback(
+    (text: string) => {
+      formValuesRef.current.notes = text;
+      updateDirtyState();
+    },
+    [updateDirtyState],
+  );
+
+  const validateForm = useCallback(() => {
+    const nextErrors = { ...EMPTY_FORM_ERRORS };
+
+    if (!formValuesRef.current.firstName.trim()) {
+      nextErrors.firstName = "Required.";
+    }
+
+    if (!formValuesRef.current.lastName.trim()) {
+      nextErrors.lastName = "Required.";
+    }
+
+    if (
+      formValuesRef.current.mobile &&
+      formValuesRef.current.mobile.length < 10
+    ) {
+      nextErrors.mobile = "Must be 10 digits.";
+    }
+
+    if (formValuesRef.current.home && formValuesRef.current.home.length < 10) {
+      nextErrors.home = "Must be 10 digits.";
+    }
+
+    if (
+      formValuesRef.current.email &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formValuesRef.current.email)
+    ) {
+      nextErrors.email = "Invalid format.";
+    }
+
+    if (!formValuesRef.current.regionId) {
+      nextErrors.regionId = "Required.";
+    }
+
+    return nextErrors;
   }, []);
 
   const handleSubmitForm = () => {
-    //TODO: add validation
+    const nextErrors = validateForm();
+    setFormErrors(nextErrors);
     const formValues = formValuesRef.current;
+
+    if (Object.values(nextErrors).some((error) => error !== "")) {
+      showToast(false, "Please fix errors and try again.");
+
+      return;
+    }
+
     const customerData: Customer = {
       id: customerId,
       firstName: formValues.firstName,
@@ -128,9 +337,25 @@ const CustomerForm = ({
   };
 
   const handleCancel = () => {
-    //TODO: add confirmation if form is dirty
     navigation.goBack();
   };
+
+  const showToast = useCallback(
+    (success: boolean, message?: string) => {
+      const toastMessage =
+        message ??
+        (success
+          ? isEditMode
+            ? "Customer updated successfully!"
+            : "Customer created successfully!"
+          : "Failed to save customer. Please try again.");
+      Toast.show({
+        type: success ? "success" : "error",
+        text1: toastMessage,
+      });
+    },
+    [isEditMode],
+  );
 
   /**
    * Handle navigation back to the previous screen after the request is completed.
@@ -148,9 +373,23 @@ const CustomerForm = ({
     if (requestLoading && status === IDLE) {
       setRequestLoading(false);
       setSubmitClicked(false);
+      isDirtyRef.current = false;
+      showToast(true);
       navigation.goBack();
     }
-  }, [status, navigation, submitClicked, requestLoading]);
+    if (status === ERROR) {
+      setRequestLoading(false);
+      setSubmitClicked(false);
+      showToast(false);
+    }
+  }, [
+    status,
+    navigation,
+    submitClicked,
+    requestLoading,
+    showToast,
+    isEditMode,
+  ]);
 
   return (
     <View style={styles.container}>
@@ -182,12 +421,18 @@ const CustomerForm = ({
               labelWidth="40%"
             >
               <TextInput
-                style={styles.textInput}
+                style={[
+                  styles.textInput,
+                  formErrors.firstName ? styles.errorInput : null,
+                ]}
                 defaultValue={initialFormValues.firstName}
                 onChangeText={handleFirstNameChange}
                 placeholder="First Name"
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
+              {formErrors.firstName && (
+                <Text style={styles.errorText}>{formErrors.firstName}</Text>
+              )}
             </LabelContainer>
             <LabelContainer
               label="Last Name:"
@@ -195,12 +440,18 @@ const CustomerForm = ({
               labelWidth="40%"
             >
               <TextInput
-                style={styles.textInput}
+                style={[
+                  styles.textInput,
+                  formErrors.lastName ? styles.errorInput : null,
+                ]}
                 defaultValue={initialFormValues.lastName}
                 onChangeText={handleLastNameChange}
                 placeholder="Last Name"
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
+              {formErrors.lastName && (
+                <Text style={styles.errorText}>{formErrors.lastName}</Text>
+              )}
             </LabelContainer>
             <LabelContainer label="Active:" isInline={false} labelWidth="40%">
               <DropdownComponent
@@ -215,6 +466,9 @@ const CustomerForm = ({
                 initialValue={initialFormValues.regionId}
                 onChangeValue={handleRegionChange}
               />
+              {formErrors.regionId && (
+                <Text style={styles.errorText}>{formErrors.regionId}</Text>
+              )}
             </LabelContainer>
           </SectionContainer>
           <SectionContainer title="Contact Information">
@@ -224,13 +478,21 @@ const CustomerForm = ({
               labelWidth="40%"
             >
               <TextInput
-                style={styles.textInput}
-                defaultValue={initialFormValues.mobile}
+                ref={mobileInputRef}
+                style={[
+                  styles.textInput,
+                  formErrors.mobile ? styles.errorInput : null,
+                ]}
+                defaultValue={formatPhoneInput(initialFormValues.mobile)}
                 onChangeText={handleMobileChange}
                 placeholder="Mobile Number"
-                maxLength={10}
+                maxLength={14}
+                keyboardType="number-pad"
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
+              {formErrors.mobile && (
+                <Text style={styles.errorText}>{formErrors.mobile}</Text>
+              )}
             </LabelContainer>
             <LabelContainer
               label="Home Number:"
@@ -238,22 +500,36 @@ const CustomerForm = ({
               labelWidth="40%"
             >
               <TextInput
-                style={styles.textInput}
-                defaultValue={initialFormValues.home}
+                ref={homeInputRef}
+                style={[
+                  styles.textInput,
+                  formErrors.home ? styles.errorInput : null,
+                ]}
+                defaultValue={formatPhoneInput(initialFormValues.home)}
                 onChangeText={handleHomeChange}
                 placeholder="Home Number"
-                maxLength={10}
+                maxLength={14}
+                keyboardType="number-pad"
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
+              {formErrors.home && (
+                <Text style={styles.errorText}>{formErrors.home}</Text>
+              )}
             </LabelContainer>
             <LabelContainer label="Email:" isInline={false} labelWidth="40%">
               <TextInput
-                style={styles.textInput}
+                style={[
+                  styles.textInput,
+                  formErrors.email ? styles.errorInput : null,
+                ]}
                 defaultValue={initialFormValues.email}
                 onChangeText={handleEmailChange}
                 placeholder="Email"
                 placeholderTextColor={styles.textInputPlaceholder.color}
               />
+              {formErrors.email && (
+                <Text style={styles.errorText}>{formErrors.email}</Text>
+              )}
             </LabelContainer>
           </SectionContainer>
           <SectionContainer title="Other">
