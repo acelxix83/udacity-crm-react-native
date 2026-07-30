@@ -1,4 +1,4 @@
-import { useLoadState } from "@/src/features/shared/hooks";
+import { useLoadState, useSavingState } from "@/src/features/shared/hooks";
 import {
   NavigationContainer,
   createNavigationContainerRef,
@@ -21,6 +21,7 @@ const navigationRef = createNavigationContainerRef<any>();
 
 const Navigator = () => {
   const { isLoading } = useLoadState();
+  const { isSaving } = useSavingState();
   const styles = stylesFn();
   const lastNotificationResponse = Notifications.useLastNotificationResponse();
   const pendingCustomerIdRef = useRef<string | null>(null);
@@ -87,56 +88,59 @@ const Navigator = () => {
     handleNotificationResponse(lastNotificationResponse);
   }, [lastNotificationResponse, handleNotificationResponse]);
 
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <ActivityIndicator size="large" color={styles.spinner.color} />
-        <Text style={styles.text}>Loading...</Text>
-      </View>
-    );
-  }
-
   return (
-    <NavigationContainer
-      ref={navigationRef}
-      theme={Theme}
-      onReady={handleNavigationReady}
-    >
-      <Stack.Navigator
-        initialRouteName="Home"
-        screenOptions={{
-          headerShown: false,
-          contentStyle: styles.navigatorBackground,
-        }}
+    <>
+      {(isLoading || isSaving) && (
+        <View style={styles.overlay}>
+          <View style={styles.overlayMessageContainer}>
+            <ActivityIndicator size="large" color={styles.spinner.color} />
+            <Text style={styles.h1}>
+              {isLoading ? "Loading..." : isSaving ? "Saving Customer..." : ""}
+            </Text>
+          </View>
+        </View>
+      )}
+      <NavigationContainer
+        ref={navigationRef}
+        theme={Theme}
+        onReady={handleNavigationReady}
       >
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen
-          name="Regions"
-          component={RegionListScreen}
-          options={{ headerShown: true }}
-        />
-        <Stack.Screen
-          name="RegionCustomers"
-          component={CustomerListScreen}
-          options={{ title: "Region Customers", headerShown: true }}
-        />
-        <Stack.Screen
-          name="EditCustomer"
-          component={EditCustomerScreen}
-          options={{ title: "Edit Customer", headerShown: true }}
-        />
-        <Stack.Screen
-          name="NewCustomer"
-          component={NewCustomerScreen}
-          options={{ title: "New Customer", headerShown: true }}
-        />
-        <Stack.Screen
-          name="CustomerDetails"
-          component={CustomerDetailsScreen}
-          options={{ title: "Customer Details", headerShown: true }}
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="Home"
+          screenOptions={{
+            headerShown: false,
+            contentStyle: styles.navigatorBackground,
+          }}
+        >
+          <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen
+            name="Regions"
+            component={RegionListScreen}
+            options={{ headerShown: true }}
+          />
+          <Stack.Screen
+            name="RegionCustomers"
+            component={CustomerListScreen}
+            options={{ title: "Region Customers", headerShown: true }}
+          />
+          <Stack.Screen
+            name="EditCustomer"
+            component={EditCustomerScreen}
+            options={{ title: "Edit Customer", headerShown: true }}
+          />
+          <Stack.Screen
+            name="NewCustomer"
+            component={NewCustomerScreen}
+            options={{ title: "New Customer", headerShown: true }}
+          />
+          <Stack.Screen
+            name="CustomerDetails"
+            component={CustomerDetailsScreen}
+            options={{ title: "Customer Details", headerShown: true }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </>
   );
 };
 

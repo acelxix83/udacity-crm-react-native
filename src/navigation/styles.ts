@@ -11,12 +11,35 @@ const stylesFn = () => {
       alignItems: "center",
       justifyContent: "center",
     },
-    text: {
-      marginTop: 10,
-      color: "#2a7ad6",
+    h1: {
+      fontSize: 24,
+      fontWeight: "bold",
+      color: "#fff",
     },
     spinner: {
-      color: "#2a7ad6",
+      color: "#fff",
+    },
+    overlay: {
+      padding: 20,
+      position: "absolute",
+      top: 0,
+      left: 0,
+      right: 0,
+      height: "100%",
+      backgroundColor: "#00000086",
+      zIndex: 1,
+      alignItems: "center",
+      justifyContent: "center",
+    },
+    overlayMessageContainer: {
+      padding: 10,
+      width: "80%",
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: "#2a7ad6",
+      backgroundColor: "#2a7ad6e8",
+      alignItems: "center",
+      justifyContent: "center",
     },
   });
 };

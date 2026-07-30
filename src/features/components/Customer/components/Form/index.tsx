@@ -1,14 +1,7 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
 
-import {
-  ActivityIndicator,
-  Alert,
-  ScrollView,
-  Text,
-  TextInput,
-  View,
-} from "react-native";
+import { Alert, ScrollView, Text, TextInput, View } from "react-native";
 
 import Toast from "react-native-toast-message";
 import { useSelector } from "react-redux";
@@ -394,15 +387,6 @@ const CustomerForm = ({
 
   return (
     <View style={styles.container}>
-      {status === LOADING && (
-        <View style={styles.savingOverlay}>
-          <View style={styles.savingContainer}>
-            <ActivityIndicator size="large" color={styles.h1.color} />
-            <Text style={styles.h1}>Saving customer...</Text>
-          </View>
-        </View>
-      )}
-
       <View style={styles.formContainer}>
         <ScrollView>
           <SectionContainer title="Customer Information">

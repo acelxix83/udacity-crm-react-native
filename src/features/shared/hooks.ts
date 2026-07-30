@@ -20,6 +20,20 @@ export const useLoadState = () => {
   return { isLoading };
 };
 
+export const useSavingState = () => {
+  const customerCreateStatus = useSelector(
+    (state: any) => state.customer.create.status,
+  );
+
+  const customerEditStatus = useSelector(
+    (state: any) => state.customer.edit.status,
+  );
+
+  const isSaving =
+    customerCreateStatus === LOADING || customerEditStatus === LOADING;
+  return { isSaving };
+};
+
 export const useClearState = () => {
   const dispatch = useDispatch();
   const clearState = () => {
