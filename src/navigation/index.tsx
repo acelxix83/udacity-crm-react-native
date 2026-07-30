@@ -31,31 +31,35 @@ const Navigator = () => {
       <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
-          headerShown: true,
+          headerShown: false,
           contentStyle: styles.navigatorBackground,
         }}
       >
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="Regions" component={RegionListScreen} />
+        <Stack.Screen
+          name="Regions"
+          component={RegionListScreen}
+          options={{ headerShown: true }}
+        />
         <Stack.Screen
           name="RegionCustomers"
           component={CustomerListScreen}
-          options={{ title: "Region Customers" }}
+          options={{ title: "Region Customers", headerShown: true }}
         />
         <Stack.Screen
           name="EditCustomer"
           component={EditCustomerScreen}
-          options={{ title: "Edit Customer" }}
+          options={{ title: "Edit Customer", headerShown: true }}
         />
         <Stack.Screen
           name="NewCustomer"
           component={NewCustomerScreen}
-          options={{ title: "New Customer" }}
+          options={{ title: "New Customer", headerShown: true }}
         />
         <Stack.Screen
           name="CustomerDetails"
           component={CustomerDetailsScreen}
-          options={{ title: "Customer Details" }}
+          options={{ title: "Customer Details", headerShown: true }}
         />
       </Stack.Navigator>
     </NavigationContainer>
