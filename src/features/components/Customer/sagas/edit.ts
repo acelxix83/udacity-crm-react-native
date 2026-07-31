@@ -15,16 +15,16 @@ function* editCustomerSaga(action: { type: string; payload: CustomerRequest }) {
       (state) => state.customer.list.customers,
     );
     const editCustomerRequest = action.payload.customer;
-    const editedCustomer: Customer = yield call(() =>
-      editCustomer(editCustomerRequest),
-    );
+
+    yield call(() => editCustomer(editCustomerRequest));
+
     const updatedCustomers: Record<string, Customer> = {
       ...customers,
-      [editCustomerRequest.id as string]: editedCustomer,
+      [editCustomerRequest.id as string]: editCustomerRequest,
     };
 
     const result: CustomerResult = {
-      customerId: editedCustomer.id as string,
+      customerId: editCustomerRequest.id as string,
       originalRegion: action.payload.originalRegion,
       customers: updatedCustomers,
     };
