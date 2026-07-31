@@ -9,6 +9,7 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import {
   ActivityIndicator,
   Platform,
+  StatusBar,
   Text,
   View,
   useColorScheme,
@@ -154,6 +155,10 @@ const Navigator = () => {
           />
         </Stack.Navigator>
       </NavigationContainer>
+      <StatusBar
+        barStyle={colorScheme === "dark" ? "light-content" : "dark-content"}
+        backgroundColor={navigationTheme.colors.background}
+      />
     </>
   );
 };

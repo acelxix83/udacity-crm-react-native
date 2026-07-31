@@ -124,12 +124,12 @@ const lightTheme: AppTheme = {
     border: {
       default: "#ccc",
       soft: "gray",
-      focus: "blue",
+      focus: "#1e60aa",
       primary: "#2a7ad6",
     },
     error: {
       main: "#c91111",
-      surface: "#fff4f4",
+      surface: "#ffd7d7",
     },
   },
   ...sharedTokens,
@@ -147,12 +147,12 @@ const darkTheme: AppTheme = {
       default: "#e6ebf2",
       muted: "#aeb8c7",
       onPrimary: "#f7fbff",
-      placeholder: "#8d96a3",
+      placeholder: "#5e636b",
     },
     background: {
-      app: "#0f1218",
-      card: "#171d27",
-      overlay: "#000000a6",
+      app: "#060b14",
+      card: "#11151b",
+      overlay: "#c4c9cea6",
     },
     border: {
       default: "#3b4452",

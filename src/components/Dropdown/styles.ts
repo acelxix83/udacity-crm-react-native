@@ -6,7 +6,6 @@ const stylesFn = () => {
 
   return StyleSheet.create({
     container: {
-      // backgroundColor: "white",
       marginTop: theme.spacing.xxs,
       marginBottom: 3,
     },
@@ -17,13 +16,14 @@ const stylesFn = () => {
       borderWidth: theme.sizes.borderThin,
       borderRadius: theme.radius.md,
       paddingHorizontal: theme.spacing.sm,
-      marginBottom: theme.spacing.smPlus,
+      marginBottom: theme.spacing.lgPlus,
     },
     focusedDropdown: {
-      borderColor: theme.colors.border.focus,
+      borderWidth: theme.sizes.borderThick,
     },
     placeholderStyle: {
       fontSize: theme.typography.bodyMd,
+      color: theme.colors.text.placeholder,
     },
     selectedTextStyle: {
       fontSize: theme.typography.bodyMd,
