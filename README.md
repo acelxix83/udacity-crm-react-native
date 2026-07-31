@@ -26,7 +26,8 @@ In the output, you'll find options to open the app in a
 
 # Features
 
-- ** Welcome page **: Basic welcome page that allows you to clear stoarge.
-- ** Regions List **: This screen allows you to select a region to view customers from that region. It also allows you to create a new customer.
-- ** Region View **: This screen shows you the list of customers for that region. Selecting a customer in this list takes you to the edit customer screen.
-- ** Create Customer **: This screen allows you to create a new customer.
+- **Welcome page**: Basic welcome page that allows you to clear storage.
+- **Regions List**: This screen allows you to select a region to view customers from that region. It also allows you to create a new customer.
+- **Region View**: This screen shows you the list of customers for that region. Selecting a customer in this list takes you to the customer details screen. This screen also allows you to create customers, but defaults the region to the current region.
+- **Customer Details**: This screen allows you to view all of the customer information. It also allows you to set a reminder to call the customer. NOTE: for development purposes this only has a fixed reminder of 10 seconds.
+- **Create Customer**: This screen allows you to create a new customer.
